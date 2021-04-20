@@ -1,0 +1,2 @@
+# sedulus-furnishing-game
+game
