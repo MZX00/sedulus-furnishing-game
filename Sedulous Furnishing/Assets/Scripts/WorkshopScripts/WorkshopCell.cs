@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System.Text.RegularExpressions;
 
 public class WorkshopCell : MonoBehaviour, IPointerClickHandler
 {
@@ -16,5 +17,9 @@ public class WorkshopCell : MonoBehaviour, IPointerClickHandler
         Sprite img = Resources.Load<Sprite>("Empty Furniture Parts/" + itemName);
         temp.GetComponent<RectTransform>().sizeDelta = new Vector2(img.texture.width,img.texture.height);
         temp.GetComponent<Image>().sprite = img;
+        if(Regex.IsMatch(itemName,"(Surface Panel)"))
+            temp.transform.SetAsFirstSibling();
+        else
+            temp.transform.SetAsLastSibling();
     }
 }
