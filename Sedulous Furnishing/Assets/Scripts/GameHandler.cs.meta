@@ -3,7 +3,13 @@ guid: ccc301b911e176f4aa5f919f65eeb644
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cusomterPrefab: {fileID: 7830936813157438442, guid: 67575e0d5777ad349a12b5621f44a118, type: 3}
+  - showcase: {instanceID: 0}
+  - player: {instanceID: 0}
+  - cslIcon: {instanceID: 0}
+  - SpeechBubble: {instanceID: 0}
+  - requirenmentPopup: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
