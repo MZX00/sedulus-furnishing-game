@@ -4,7 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - RequirementCanvas: {fileID: 3461401367801192436, guid: b54238101782b17498c61e59ceee8a0a, type: 3}
+  - RequirementCanvas: {instanceID: 0}
   - bubble: {fileID: 1098781044711750135, guid: 63d86b92999ea194fb14d37c89ded1ab, type: 3}
   - Furniture: {instanceID: 0}
   executionOrder: 0
