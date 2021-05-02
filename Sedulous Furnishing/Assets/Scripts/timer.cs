@@ -11,16 +11,24 @@ public class timer : MonoBehaviour
     [SerializeField]
     private Text hourTextObj;
     [SerializeField]
-    private Text day;
+    private Text dayTextObj;
+
+
+    IDictionary<int, string> Days = new Dictionary<int, string>();
 
     private sbyte minute;
+    private sbyte todayInNum;
     private sbyte hour;
     // Start is called before the first frame update
     void Start()
     {
+        initDays();
+
+        todayInNum = 0;
+        dayTextObj.text = Days[todayInNum];
         minute = 00;
         minuteTextObj.text = "00";
-        hour = 8;
+        hour = 4;
         hourTextObj.text = "0" + hour;
         StartCoroutine(changeSecond());
     }
@@ -62,9 +70,11 @@ public class timer : MonoBehaviour
         {
             hour = 00;
         }
-        if (hour == 6)
+        if (hour == 5)
         {
             Debug.Log("Day ended");
+            hour = 00;
+            incrementDay();
             // changed to next scene
 
         }
@@ -77,6 +87,21 @@ public class timer : MonoBehaviour
         {
             hourTextObj.text = "0" + hour;
         }
+    }
 
+    public void incrementDay()
+    {
+        todayInNum++;
+        dayTextObj.text = Days[todayInNum];
+    }
+
+    public void initDays()
+    {
+        Days.Add(0, "Monday");
+        Days.Add(1, "Tuesday");
+        Days.Add(2, "Wednesday");
+        Days.Add(3, "Thursday");
+        Days.Add(4, "Firday");
+        Days.Add(5, "Saturday");
     }
 }
