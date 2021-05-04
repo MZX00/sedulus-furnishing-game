@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class timer : MonoBehaviour
 {
-
+    [SerializeField]
+    private GameObject gamehandler;
     [SerializeField]
     private Text minuteTextObj;
     [SerializeField]
@@ -18,22 +19,73 @@ public class timer : MonoBehaviour
 
     private sbyte minute;
     private sbyte todayInNum;
-    private sbyte hour;
+    private static sbyte hour;
+
+    private void Awake()
+    {
+        initDays();
+    }
+    public void initDays()
+    {
+        Days.Add(0, "Monday");
+        Days.Add(1, "Tuesday");
+        Days.Add(2, "Wednesday");
+        Days.Add(3, "Thursday");
+        Days.Add(4, "Firday");
+        Days.Add(5, "Saturday");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        initDays();
-
         todayInNum = 0;
         dayTextObj.text = Days[todayInNum];
         minute = 00;
         minuteTextObj.text = "00";
-        hour = 4;
+        hour = 2;
         hourTextObj.text = "0" + hour;
         StartCoroutine(changeSecond());
     }
 
-   IEnumerator changeSecond()
+    public sbyte Hour
+    {
+        get
+        {
+            return hour;
+        }
+        set
+        {
+            hour = value;
+        }
+    }
+
+    public sbyte Minute
+    {
+        get
+        {
+            return minute;
+        }
+        set
+        {
+            minute = value;
+        }
+    }
+
+    public sbyte TodayInNum
+    {
+        get
+        {
+            return todayInNum;
+        }
+        set
+        {
+            todayInNum = value;
+        }
+    }
+
+
+
+    IEnumerator changeSecond()
     {
         while (true)
         {
@@ -91,17 +143,9 @@ public class timer : MonoBehaviour
 
     public void incrementDay()
     {
+        Debug.Log("Day has been changed");
         todayInNum++;
         dayTextObj.text = Days[todayInNum];
-    }
-
-    public void initDays()
-    {
-        Days.Add(0, "Monday");
-        Days.Add(1, "Tuesday");
-        Days.Add(2, "Wednesday");
-        Days.Add(3, "Thursday");
-        Days.Add(4, "Firday");
-        Days.Add(5, "Saturday");
+        gamehandler.GetComponent<GameHandler>().ShowDaysSummary();
     }
 }

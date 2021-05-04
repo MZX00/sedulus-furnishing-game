@@ -71,4 +71,9 @@ public class sceneManager : MonoBehaviour
     {
         SceneManager.LoadScene("Workshop");
     }
+
+    public void goToShop()
+    {
+        SceneManager.LoadScene("Shop");
+    }
 }

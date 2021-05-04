@@ -11,6 +11,54 @@ public class Player : MonoBehaviour
     private int money;
     private int score;
 
+    private int dayNetIncome;
+    private int dayExpenses;
+    private int dayRevenue;
+
+
+    public int DayNetIncome
+    {
+        get
+        {
+            return dayNetIncome;
+        }
+        set
+        {
+            dayNetIncome = value;
+        }
+    }
+
+    public int DayExpenses
+    {
+        get
+        {
+            return dayExpenses;
+        }
+        set
+        {
+            dayExpenses = value;
+        }
+    }
+
+    public int DayRevenue
+    {
+        get
+        {
+            return dayRevenue;
+        }
+        set
+        {
+            dayRevenue = value;
+        }
+    }
+
+    private void Awake()
+    {
+        dayExpenses = 0;
+        dayNetIncome = 0;
+        dayRevenue = 0;
+    }
+
 
     public int getMoney()
     {
@@ -26,6 +74,8 @@ public class Player : MonoBehaviour
     public void addMoney(int amount)
     {
         money = money+ amount;
+        dayRevenue = dayRevenue + amount;
+        dayNetIncome = dayNetIncome + amount;
         updateMoney();
     }
 
@@ -39,6 +89,8 @@ public class Player : MonoBehaviour
         {
             money = money - amount;
             updateMoney();
+            dayExpenses = dayExpenses + amount;
+            dayNetIncome = dayNetIncome - amount;
         }
 
 

@@ -18,13 +18,16 @@ public class Customer : MonoBehaviour
     private GameObject UI;
     private Button bubbleButton;
     private GameObject instance;
-    private int csl;
+    private bool isColliding;
+
+    [SerializeField]
     private int patience; // count down when customer reaches coutner 
+
     private sbyte journey; // +1 means that customer needs to go to counter and place their order 
     // 0 means that customer is in counter 
     // -1 means that customer is returning from counter
     private bool speechActive;  // boolean value to check if speech bubble is active or not
-    private float timerPatience = 0.0f;
+    private float timerPatience = 0.0f; // to check for  1 second
     private bool isattended;
     private bool orderplaced; // customer has placed his order or not 
     private sbyte customerType; // 1 means customer will return, 0 means customer will purchase thee furniture onspot
@@ -32,7 +35,7 @@ public class Customer : MonoBehaviour
 
     private void Awake()
     {
-        patience = 13;
+
     }
 
 
@@ -45,12 +48,14 @@ public class Customer : MonoBehaviour
         UI = GameObject.Find("UI");
         isattended = false;
         //RequirementCanvas = GameObject.Find("Game Handler").GetComponent<GameHandler>().canvas;
-        RequirementCanvas.SetActive(false);
+        RequirementCanvas.SetActive(false); 
         rb = gameObject.GetComponent<Rigidbody2D>();
+        patience = 13;
+        isColliding = false;
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
         movement();
     }
@@ -102,6 +107,7 @@ public class Customer : MonoBehaviour
             this.patience -= 1;
             return false;
         }else{
+            GameObject.Find("Game Handler").GetComponent<GameHandler>().decreaseCsl();
             return true;
         }
     }
@@ -109,14 +115,42 @@ public class Customer : MonoBehaviour
     public void movement()
     {
 
+        if (isColliding)
+        {
+            if (!isattended)
+            {
+                timerPatience += Time.deltaTime;
+                // after every second the value of patience is decreased by 1
+                if (timerPatience > 1.0f)
+                {
+                    if (decreasePatience())
+                    {
+                        journey = -1;
+                        //UI.GetComponent<uiscript>().deleteBubble();
+                        if (journey == 0)
+                        {
+                            deleteBubble();
+                            speechActive = false;
+                        }
+                    }
+                    timerPatience = 0.0f;
+                    Debug.Log(patience);
+                }
+
+            }
+        }
+
         if (journey == 1) //When Customer is moving towards counter
         {
             //transform.Translate(0, 1 * Time.deltaTime, 0);
 
-            rb.AddForce(transform.up * speed * Time.deltaTime, ForceMode2D.Impulse);
+            //rb.AddForce(transform.up * speed * Time.deltaTime, ForceMode2D.Impulse);
+            
+            transform.Translate(0, 1 * Time.deltaTime, 0);
+
             //Vector3 newPosition = transform.position + (transform.up*Time.deltaTime);
             //rb.MovePosition(newPosition);
-            if(transform.position.y > -0.53f)
+            if (transform.position.y > -0.53f)
             {
                 Debug.Log("Customer reached counter");
                 journey = 0;
@@ -132,23 +166,6 @@ public class Customer : MonoBehaviour
                 // Need to render sprite when customer reaches counter 
                 // and stop sprite render when customer goes out from counter  
                 openBubble();
-            }
-
-            if (!isattended) {
-                timerPatience += Time.deltaTime;
-                // after every second the value of patience is decreased by 1
-                if (timerPatience > 1.0f)
-                {
-                    if (decreasePatience())
-                    {
-                        journey = -1;
-                        //UI.GetComponent<uiscript>().deleteBubble();
-                        deleteBubble();
-                        speechActive = false;
-                    }
-                    timerPatience = 0.0f;
-                    Debug.Log(patience);
-                }
             }
             
         }
@@ -196,11 +213,8 @@ public class Customer : MonoBehaviour
     public void openRequirementCanvas()
     {
 
-        Debug.Log("RequirementCanvas.activeInHierarchy " + RequirementCanvas.activeSelf);
         isattended = true;
         deleteBubble();
-        Debug.Log(isattended);
-        Debug.Log("Bubble button clicked");
         RequirementCanvas.SetActive(true);
 
         Furniture = gameHandler.GetComponent<GameHandler>().selectCustomFurniture();
@@ -250,26 +264,14 @@ public class Customer : MonoBehaviour
 
     public void sellFurniture()
     {
+        isattended = false;
         closeRequirementCanvas();
         Furniture = GameObject.Find("Game Handler").GetComponent<GameHandler>().selectCustomFurniture();
         GameObject.Find("Game Handler").GetComponent<GameHandler>().sellFurniturToCustomer(this.gameObject, this.Furniture);
+        Debug.Log("Furniture Sold");
         //        sellFurniturToCustomer();
     }
 
-  /*  public void sellFurniturToCustomer()
-    {
-        GameObject furniture = Furniture;
-        int fid = furniture.GetComponent<Furniture>().getFID();
-        int price = furniture.GetComponent<Furniture>().getPrice();
-        showcase.GetComponent<FurnitureShowcase>().removeFurniturefromCell(fid);
-        player.GetComponent<Player>().addMoney(price);
-        csl += 1;
-        GameObject.Find("Game Handler").GetComponent<GameHandler>().removeCustomerFromList(gameObject);
-        Destroy(furniture);
-        Destroy(gameObject);
-        //customer.GetComponent<Customer>().leaveShop();
-    }
-  */
     public void selectCustomFurniture()
     {
         // Get how many furniture player has made
@@ -296,31 +298,43 @@ public class Customer : MonoBehaviour
 
             //Find("Furniture Panel")
         }
+    }
 
+    public void activatePatience()
+    {
+        while (isColliding)
+        {
+            Debug.Log("Collision running");
+            if (!isattended)
+            {
+                timerPatience += Time.deltaTime;
+                // after every second the value of patience is decreased by 1
+                if (timerPatience > 1.0f)
+                {
+                    if (decreasePatience())
+                    {
+                        journey = -1;
+                        //UI.GetComponent<uiscript>().deleteBubble();
+                        deleteBubble();
+                        speechActive = false;
+                    }
+                    timerPatience = 0.0f;
+                    Debug.Log(patience);
+                }
+            }
+        }
+    }
+
+    public void OnCollisionEnter2D()
+    {
+        isColliding = true;
+        //activatePatience();
 
     }
 
-    /*    public void terminateRequest()
+    public void OnCollisionExit2D()
     {
-        //GameObject customer = (GameObject)customers[0];
-        //customers.RemoveAt(0);
-        GameObject.Find("Game Handler").GetComponent<GameHandler>().removeCustomerFromList(gameObject);
-        //GameObject furniture = customer.GetComponent<Customer>().Furniture;
-        GameObject furniture = Furniture;
-        deleteBubble(); //SpeechBubble.SetActive(false);
-        Destroy(furniture);
-        Destroy(gameObject);
-
-
-        //        requirenmentPopup.SetActive(false);
-        //        customer.GetComponent<Customer>().leaveShop();
-    }
-*/
-
-    public void OnCollisionEnter()
-    {
-        Debug.Log("Runinng oncollision enter");
-        decreasePatience();
+        isColliding = false;
     }
 
     public void deleteBubble()
@@ -328,48 +342,29 @@ public class Customer : MonoBehaviour
         Destroy(instance);
         Debug.Log("speech bubble is destroyed");
     }
-
     
     public void closeRequirementCanvas()
     {
         RequirementCanvas.SetActive(false);
+        GameObject.Find("Game Handler").GetComponent<GameHandler>().decreaseCsl();
         // customer will return
         journey = -1;
     }
-
-
-    /*private void OnTriggerEnter2D(Collider2D counterCollider)
-    {
-        if(counterCollider.gameObject.name == "cusomterPrefab(Clone)")
-        {
-            Debug.Log("Evil Laugh ");
-        }
-        else
-        {
-            Debug.Log("Customer reached counter");
-            journey = 0;
-            *//*customerBubbleSpeech.SetActive(true);*//*
-        }
-    }*/
 }
-
-
-
 
 
 /* 
  * 
- * 1) Correct movements (Done Donea Done)
- * 2) sell furniture will be in game handler, sell button will execute sellfurniture of gamehandler(customer, furniture);(Done Donea Done)
- * 3) patience should continue then requirement popup is closed  // need to work on this 
- * 4) Form proper queue (Done Donea Done)
- * 5) Random generation of customer 
- * 6) Add timer and it's functionality (Highest priority)
- * 7) Customer Request type 
- * 8) When day ends, change scene(to new scene)
- * 9) Money, increase, decrease, count, how much sold in the entire day
- * 10) customer satisfaction level implementation and changing of icon.
- * 11) 
+ * (Done) (1) Correct movements (Done Donea Done)
+ * (Done) (2) sell furniture will be in game handler, sell button will execute sellfurniture of gamehandler(customer, furniture);(Done Donea Done)
+ * (Done) (3) patience should continue when requirement popup is closed  // need to work on this 
+ * (Done) (4) Form proper queue (Done Donea Done)
+ * (Done) (5) Random generation of customer 
+ * (Done) (6) Add timer and it's functionality (Highest priority) (Done Donea Done)
+ * (7) Customer Request type 
+ * (Done) (8) When day ends, change scene(to new scene) (Done Donea Done)
+ * (Done) (9) Money, increase, decrease, count, how much sold in the entire day (Done Donea Done)
+ * (Done) (10) customer satisfaction level implementation and changing of icon.
  * 
  *  Add Animation if possible.
  * 
