@@ -109,6 +109,7 @@ public class Player : MonoBehaviour
     public void addScore(int amount)
     {
         score = score + amount;
+        Debug.Log("score = " + score);
     }
 
     public void subtractScore(int amount)
@@ -136,5 +137,14 @@ public class Player : MonoBehaviour
             Debug.Log("money text do not exists");
         }
         
+    }
+
+    public void calculateScore(int patience, int costOfFurnitur)
+    {
+        if(patience > 6)
+        {
+            int temp = (int)((patience * costOfFurnitur) / 800);
+            addScore(temp);
+        }
     }
 }

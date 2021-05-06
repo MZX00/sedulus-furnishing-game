@@ -8,6 +8,8 @@ public class timer : MonoBehaviour
     [SerializeField]
     private GameObject gamehandler;
     [SerializeField]
+    private GameObject player;
+    [SerializeField]
     private Text minuteTextObj;
     [SerializeField]
     private Text hourTextObj;
@@ -38,11 +40,29 @@ public class timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        todayInNum = 0;
+        timerData data = SaveManager.loadDate();
+        Debug.Log("data = "+ data);
+
+        if (data != null)
+        {
+            Debug.Log("Saved File exists");
+            todayInNum = data.dayInNum;
+        }
+        else
+        {
+            Debug.LogError("Saved File do not exists");
+            Debug.Log("Saved File do not exists");
+            Debug.LogError("Saved File do not exists");
+            todayInNum = 4;
+
+        }
+
+        //todayInNum = 0;
+        
         dayTextObj.text = Days[todayInNum];
         minute = 00;
         minuteTextObj.text = "00";
-        hour = 2;
+        hour = 4;
         hourTextObj.text = "0" + hour;
         StartCoroutine(changeSecond());
     }
@@ -146,6 +166,9 @@ public class timer : MonoBehaviour
         Debug.Log("Day has been changed");
         todayInNum++;
         dayTextObj.text = Days[todayInNum];
+        hour = 8;
+        minute = 00;
         gamehandler.GetComponent<GameHandler>().ShowDaysSummary();
+        SaveManager.saveDate(this);
     }
 }

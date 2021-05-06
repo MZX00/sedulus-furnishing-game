@@ -90,4 +90,9 @@ public class summarySript : MonoBehaviour
         SceneManager.UnloadSceneAsync(currentScene);
 
     }
+
+    public void goToShop()
+    {
+        SceneManager.LoadScene("Shop");
+    }
 }

@@ -123,6 +123,7 @@ MonoBehaviour:
   showcase: {fileID: 0}
   speechBubblePrefab: {fileID: 1098781044711750135, guid: 63d86b92999ea194fb14d37c89ded1ab, type: 3}
   Furniture: {fileID: 0}
+  patience: 13
 --- !u!61 &3060809875531365197
 BoxCollider2D:
   m_ObjectHideFlags: 0

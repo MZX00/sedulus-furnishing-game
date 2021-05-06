@@ -690,7 +690,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1395295355}
         m_TargetAssemblyTypeName: summarySript, Assembly-CSharp
-        m_MethodName: returnToShop
+        m_MethodName: goToShop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

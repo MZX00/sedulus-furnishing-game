@@ -9,16 +9,15 @@ public class Customer : MonoBehaviour
 {
     //[SerializeField]
     private float speed = 0.4f;
+    public GameObject UI;
     public GameObject gameHandler;
     public GameObject RequirementCanvas; // requirement pop up canvas
     public GameObject player; 
     public GameObject showcase;
     public GameObject speechBubblePrefab;
     public GameObject Furniture;
-    private GameObject UI;
     private Button bubbleButton;
     private GameObject instance;
-    private bool isColliding;
 
     [SerializeField]
     private int patience; // count down when customer reaches coutner 
@@ -32,6 +31,8 @@ public class Customer : MonoBehaviour
     private bool orderplaced; // customer has placed his order or not 
     private sbyte customerType; // 1 means customer will return, 0 means customer will purchase thee furniture onspot
     private Rigidbody2D rb;
+    private bool colliding;
+    private bool itemsold;
 
     private void Awake()
     {
@@ -45,13 +46,13 @@ public class Customer : MonoBehaviour
         orderplaced = false;
         customerType = 1;
         speechActive = false;
-        UI = GameObject.Find("UI");
         isattended = false;
         //RequirementCanvas = GameObject.Find("Game Handler").GetComponent<GameHandler>().canvas;
         RequirementCanvas.SetActive(false); 
         rb = gameObject.GetComponent<Rigidbody2D>();
         patience = 13;
-        isColliding = false;
+        colliding = false;
+        itemsold = false;
 
     }
 
@@ -107,6 +108,7 @@ public class Customer : MonoBehaviour
             this.patience -= 1;
             return false;
         }else{
+            // If patience has ended then decrease customer satisfaction level
             GameObject.Find("Game Handler").GetComponent<GameHandler>().decreaseCsl();
             return true;
         }
@@ -114,39 +116,14 @@ public class Customer : MonoBehaviour
 
     public void movement()
     {
-
-        if (isColliding)
-        {
-            if (!isattended)
-            {
-                timerPatience += Time.deltaTime;
-                // after every second the value of patience is decreased by 1
-                if (timerPatience > 1.0f)
-                {
-                    if (decreasePatience())
-                    {
-                        journey = -1;
-                        //UI.GetComponent<uiscript>().deleteBubble();
-                        if (journey == 0)
-                        {
-                            deleteBubble();
-                            speechActive = false;
-                        }
-                    }
-                    timerPatience = 0.0f;
-                    Debug.Log(patience);
-                }
-
-            }
-        }
-
         if (journey == 1) //When Customer is moving towards counter
         {
             //transform.Translate(0, 1 * Time.deltaTime, 0);
-
             //rb.AddForce(transform.up * speed * Time.deltaTime, ForceMode2D.Impulse);
-            
-            transform.Translate(0, 1 * Time.deltaTime, 0);
+            if (!colliding)
+            {
+                transform.Translate(0, 1 * Time.deltaTime, 0);
+            }
 
             //Vector3 newPosition = transform.position + (transform.up*Time.deltaTime);
             //rb.MovePosition(newPosition);
@@ -158,16 +135,48 @@ public class Customer : MonoBehaviour
         }
         else if (journey == 0 ) //When cusotmer is standing at counter
         {
+            if (transform.position.y < -0.53f)
+            {
+                transform.Translate(0, 1 * Time.deltaTime, 0);
+            }
+
             if (!speechActive)
             {
                 rb.velocity = Vector3.zero;
                 //UI.GetComponent<uiscript>().showBubble();
-                speechActive = true;
                 // Need to render sprite when customer reaches counter 
                 // and stop sprite render when customer goes out from counter  
-                openBubble();
+                
+                if ( !GameObject.Find("Game Handler").GetComponent<GameHandler>().isShowcaseEmpty())
+                {
+                    if (!itemsold)
+                    {
+                        openBubble();
+                        speechActive = true;
+                    }
+                
+                }
             }
-            
+
+            if (!isattended)
+            {
+                
+                timerPatience += Time.deltaTime;
+                // after every second the value of patience is decreased by 1
+                if (timerPatience > 1.0f)
+                {
+                    if (decreasePatience())
+                    {
+                        journey = -1;
+                        //UI.GetComponent<uiscript>().deleteBubble();
+                        deleteBubble();
+                        speechActive = false;
+                    }
+                    timerPatience = 0.0f;
+                    Debug.Log("Patience = " + patience);
+                }
+            }
+
         }
 
         else if (journey == -1) //When customer is returning 
@@ -191,7 +200,7 @@ public class Customer : MonoBehaviour
                 if (transform.position.y < -7.0f)
                 {
                     journey = 2;
-                    GameObject.Find("Game Handler").GetComponent<GameHandler>().removeCustomerFromList(gameObject);
+                    GameObject.Find("Game Handler").GetComponent<GameHandler>().removeCustomerFromList(this.gameObject);
                     Destroy(instance);
                     Debug.Log("Customer Destroyed");
                     Destroy(this.gameObject);
@@ -264,6 +273,7 @@ public class Customer : MonoBehaviour
 
     public void sellFurniture()
     {
+        itemsold = true;
         isattended = false;
         closeRequirementCanvas();
         Furniture = GameObject.Find("Game Handler").GetComponent<GameHandler>().selectCustomFurniture();
@@ -299,46 +309,9 @@ public class Customer : MonoBehaviour
             //Find("Furniture Panel")
         }
     }
-
-    public void activatePatience()
-    {
-        while (isColliding)
-        {
-            Debug.Log("Collision running");
-            if (!isattended)
-            {
-                timerPatience += Time.deltaTime;
-                // after every second the value of patience is decreased by 1
-                if (timerPatience > 1.0f)
-                {
-                    if (decreasePatience())
-                    {
-                        journey = -1;
-                        //UI.GetComponent<uiscript>().deleteBubble();
-                        deleteBubble();
-                        speechActive = false;
-                    }
-                    timerPatience = 0.0f;
-                    Debug.Log(patience);
-                }
-            }
-        }
-    }
-
-    public void OnCollisionEnter2D()
-    {
-        isColliding = true;
-        //activatePatience();
-
-    }
-
-    public void OnCollisionExit2D()
-    {
-        isColliding = false;
-    }
-
     public void deleteBubble()
     {
+        isattended = false;
         Destroy(instance);
         Debug.Log("speech bubble is destroyed");
     }
@@ -349,6 +322,16 @@ public class Customer : MonoBehaviour
         GameObject.Find("Game Handler").GetComponent<GameHandler>().decreaseCsl();
         // customer will return
         journey = -1;
+    }
+
+    void OnCollisionEnter2D()
+    {
+        colliding = true;
+    }
+
+    void OnCollisionExit2D()
+    {
+        colliding = false;
     }
 }
 
@@ -361,11 +344,26 @@ public class Customer : MonoBehaviour
  * (Done) (4) Form proper queue (Done Donea Done)
  * (Done) (5) Random generation of customer 
  * (Done) (6) Add timer and it's functionality (Highest priority) (Done Donea Done)
- * (7) Customer Request type 
+ * 
  * (Done) (8) When day ends, change scene(to new scene) (Done Donea Done)
  * (Done) (9) Money, increase, decrease, count, how much sold in the entire day (Done Donea Done)
  * (Done) (10) customer satisfaction level implementation and changing of icon.
  * 
- *  Add Animation if possible.
+ * (Done) (1) correct bugs 
+ * (2) save and resume game implementaion 
+ * (Done) (3) level handler script
+ * (if possible) (7) Customer Request type 
+ * 
+ * (Add Animation if possible)
+ * 
+ * Add price 
+ * save baisc information, save, money, day, even if game ends and is restarted
+ * 
+ * (1) create game script ( Save : player data (money, day, score, csl)
+ * (2) scene transition will not have any affect in customers and timer 
+ * (3) add sound, when customer reaches to counter a bell sound will ring 
+ * (4) 
+ * 
+ * 
  * 
  */
