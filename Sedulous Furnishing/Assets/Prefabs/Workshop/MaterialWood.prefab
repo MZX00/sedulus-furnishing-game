@@ -25,6 +25,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectHandler: {fileID: 0}
+  costCalculator: {fileID: 0}
   borderPrefab: {fileID: 5729560310133983275, guid: c5fb04e7d189e674ba25efcc05312b45, type: 3}
 --- !u!1 &5279245922039685048
 GameObject:
@@ -106,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectHandler: {fileID: 0}
+  costCalculator: {fileID: 0}
   borderPrefab: {fileID: 5729560310133983275, guid: c5fb04e7d189e674ba25efcc05312b45, type: 3}
 --- !u!114 &4527877190209754600
 MonoBehaviour:
@@ -132,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectHandler: {fileID: 0}
+  costCalculator: {fileID: 0}
   borderPrefab: {fileID: 5729560310133983275, guid: c5fb04e7d189e674ba25efcc05312b45, type: 3}
 --- !u!114 &3475881906763383830
 MonoBehaviour:
@@ -170,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectHandler: {fileID: 0}
+  costCalculator: {fileID: 0}
   borderPrefab: {fileID: 5729560310133983275, guid: c5fb04e7d189e674ba25efcc05312b45, type: 3}
 --- !u!114 &201821109395135849
 MonoBehaviour:
@@ -196,6 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectHandler: {fileID: 0}
+  costCalculator: {fileID: 0}
   borderPrefab: {fileID: 5729560310133983275, guid: c5fb04e7d189e674ba25efcc05312b45, type: 3}
 --- !u!1001 &1061369447459015813
 PrefabInstance:
@@ -206,9 +211,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1955535316, guid: 1d0ef8444ee88c14b8043de94126f344, type: 3}
       propertyPath: m_text
-      value: 'Cherry
-
-'
+      value: Cherry
       objectReference: {fileID: 0}
     - target: {fileID: 7546144703597396647, guid: 1d0ef8444ee88c14b8043de94126f344, type: 3}
       propertyPath: m_Name

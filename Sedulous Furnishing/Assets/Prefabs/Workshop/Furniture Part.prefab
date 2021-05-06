@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1859575631315495649}
   - component: {fileID: 1859575631315495651}
   - component: {fileID: 1859575631315495650}
-  - component: {fileID: 1859575631315495652}
   - component: {fileID: 2241781887757920022}
   - component: {fileID: 8278645188026960820}
+  - component: {fileID: 405403879098251525}
   m_Layer: 5
   m_Name: Furniture Part
   m_TagString: Untagged
@@ -78,18 +78,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1859575631315495652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859575631315495648}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7311d892e2a9a8a48a670b323b457e63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2241781887757920022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,3 +136,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xPadding: 440
   yPadding: 110
+--- !u!114 &405403879098251525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859575631315495648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7311d892e2a9a8a48a670b323b457e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

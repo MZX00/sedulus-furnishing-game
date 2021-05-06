@@ -9,8 +9,8 @@ using System.Text.RegularExpressions;
 public class FurniturePartCell : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] GameObject itemPrefab;
-    [SerializeField] GameObject furniture;
     public GameObject selectHandler;
+    // public CostCalculator costCalculator;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -23,6 +23,9 @@ public class FurniturePartCell : MonoBehaviour, IPointerClickHandler
         temp.GetComponent<Image>().sprite = img;
         temp.GetComponent<Button>().onClick.AddListener(delegate { selectHandler.GetComponent<SelectHandler>().selectObject(temp); });
         temp.name = itemName;
+        temp.GetComponent<FurniutrePart>().PartType = itemName;
+        temp.GetComponent<FurniutrePart>().MaterialType = "None";
+        // costCalculator.calculateCost(temp.GetComponent<FurniutrePart>(),false);
         if(Regex.IsMatch(itemName,"(Surface Panel)"))
             temp.transform.SetAsFirstSibling();
         else
