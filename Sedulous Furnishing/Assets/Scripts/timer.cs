@@ -40,22 +40,22 @@ public class timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timerData data = SaveManager.loadDate();
-        Debug.Log("data = "+ data);
+        // tiimerData data = SaveManager.loadDate();
+        // Debug.Log("data = "+ data);
 
-        if (data != null)
-        {
-            Debug.Log("Saved File exists");
-            todayInNum = data.dayInNum;
-        }
-        else
-        {
-            Debug.LogError("Saved File do not exists");
-            Debug.Log("Saved File do not exists");
-            Debug.LogError("Saved File do not exists");
-            todayInNum = 4;
+        // if (data != null)
+        // {
+        //     Debug.Log("Saved File exists");
+        //     // todayInNum = data.dayInNum;
+        // }
+        // else
+        // {
+        //     Debug.LogError("Saved File do not exists");
+        //     Debug.Log("Saved File do not exists");
+        //     Debug.LogError("Saved File do not exists");
+        //     todayInNum = 4;
 
-        }
+        // }
 
         //todayInNum = 0;
         
