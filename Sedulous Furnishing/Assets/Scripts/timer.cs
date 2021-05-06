@@ -23,7 +23,7 @@ public class timer : MonoBehaviour
     private sbyte todayInNum;
     private static sbyte hour;
 
-    private void Awake()
+    void Awake()
     {
         initDays();
     }
@@ -40,29 +40,32 @@ public class timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // tiimerData data = SaveManager.loadDate();
-        // Debug.Log("data = "+ data);
 
-        // if (data != null)
-        // {
-        //     Debug.Log("Saved File exists");
-        //     // todayInNum = data.dayInNum;
-        // }
-        // else
-        // {
-        //     Debug.LogError("Saved File do not exists");
-        //     Debug.Log("Saved File do not exists");
-        //     Debug.LogError("Saved File do not exists");
-        //     todayInNum = 4;
+        timerData data = SaveManager.loadDate();
+        data = SaveManager.loadDate();
+        Debug.Log("data = "+ data);
 
-        // }
+        if (data != null)
+        {
+            Debug.Log("Saved File exists");
+            todayInNum = data.dayInNum;
+        }
+        else
+        {
+            Debug.LogError("Saved File do not exists");
+            Debug.Log("Saved File do not exists");
+            Debug.LogError("Saved File do not exists");
+            todayInNum = 4;
 
-        //todayInNum = 0;
-        
+        }
+
+        todayInNum = 0;
+        todayInNum =  (sbyte)(PlayerPrefs.GetInt("dayinnum"));
+
         dayTextObj.text = Days[todayInNum];
         minute = 00;
         minuteTextObj.text = "00";
-        hour = 4;
+        hour = 2;
         hourTextObj.text = "0" + hour;
         StartCoroutine(changeSecond());
     }
@@ -132,8 +135,6 @@ public class timer : MonoBehaviour
         {
             minuteTextObj.text = "0" + minute;
         }
-        
-
     }
     public void incrementHour()
     {
@@ -168,6 +169,7 @@ public class timer : MonoBehaviour
         dayTextObj.text = Days[todayInNum];
         hour = 8;
         minute = 00;
+        PlayerPrefs.SetInt("dayinnum",todayInNum);
         gamehandler.GetComponent<GameHandler>().ShowDaysSummary();
         SaveManager.saveDate(this);
     }
