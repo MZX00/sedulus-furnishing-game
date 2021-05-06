@@ -26,23 +26,25 @@ public class SelectHandler : MonoBehaviour
             }else{
                 stickButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stick";
             }
-            if(!Regex.IsMatch(part.name,"(StuckPart)") && selectedParts.Count == 0){
-                miniInventoryHandler.GetComponent<MiniInventoryHandler>().changeToWoodMaterial(part.GetComponent<Image>().name);
-            }
             addBorder(part);
             selectedParts.Add(part);
             Debug.Log("Item Added");
         }
         else {
-            miniInventoryHandler.GetComponent<MiniInventoryHandler>().changeToWoodMaterial(part.GetComponent<Image>().name);
             stickButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stick";
             selectedParts.RemoveAt(index);
             removeBorder(part);
             Debug.Log("Item Removed");
         }
+        if(selectedParts.Count == 1){
+            miniInventoryHandler.GetComponent<MiniInventoryHandler>().changeToWoodMaterial();
+        }else{
+            miniInventoryHandler.GetComponent<MiniInventoryHandler>().changeToFurnitureParts();
+        }
     }
 
     public List<GameObject> getSelected(int ammount){
+        Debug.Log("Selected amount:" + selectedParts.Count);
         if(ammount == -1){
             return selectedParts;
         }else if(selectedParts.Count != ammount){

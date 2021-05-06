@@ -4,11 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Text.RegularExpressions;
 
 public class WoodMaterialCell : MonoBehaviour, IPointerClickHandler
 {
     public GameObject selectHandler;
+    public CostCalculator costCalculator;
     [SerializeField] GameObject borderPrefab;
     // [SerializeField] GameObject materialHandler;
     public void OnPointerClick(PointerEventData eventData)
@@ -20,18 +20,37 @@ public class WoodMaterialCell : MonoBehaviour, IPointerClickHandler
             selectHandler.GetComponent<SelectHandler>().setErrorMsg("Select furniture part (only 1) to apply material");
         }else{
             GameObject selected = temp[0];
-            string name = selected.GetComponent<Image>().name;
-            string reg = "(" + materialName + ")";
-            if(Regex.IsMatch(name,reg)){
-                img = Resources.Load<Sprite>("Wood Furniture Parts/" + selected.name);
-                selected.GetComponent<RectTransform>().sizeDelta = new Vector2(img.texture.width,img.texture.height);
-                selected.GetComponent<Image>().sprite = img;
-                removeBorder();
-            }else{
+            FurniutrePart part = selected.GetComponent<FurniutrePart>();
+            if(part.MaterialType == "None"){
                 addBorder();
-                img = Resources.Load<Sprite>("Furniture Parts/Wood/" + materialName + "/" + selected.name);
+                part.MaterialType = materialName;
+                img = Resources.Load<Sprite>("Furniture Parts/Wood/" + materialName + "/" + part.PartType);
                 selected.GetComponent<RectTransform>().sizeDelta = new Vector2(img.texture.width,img.texture.height);
                 selected.GetComponent<Image>().sprite = img;
+                costCalculator.calculateCost(part,false);
+            }else if(part.MaterialType == materialName){
+                img = Resources.Load<Sprite>("Empty Furniture Parts/" + part.PartType);
+                selected.GetComponent<RectTransform>().sizeDelta = new Vector2(img.texture.width,img.texture.height);
+                selected.GetComponent<Image>().sprite = img;
+                part.MaterialType = "None";
+                removeBorder();
+                costCalculator.calculateCost(part,true);
+            }else{
+                costCalculator.calculateCost(part,true);
+                for (int i = 0; i < transform.parent.childCount; i++)
+                {
+                    string childName =  transform.parent.GetChild(i).GetComponentInChildren<TextMeshProUGUI>().text;
+                    if(childName == part.MaterialType){
+                        transform.parent.GetChild(i).GetComponent<WoodMaterialCell>().removeBorder();
+                        break;
+                    }
+                }
+                addBorder();
+                part.MaterialType = materialName;
+                img = Resources.Load<Sprite>("Furniture Parts/Wood/" + materialName + "/" + part.PartType);
+                selected.GetComponent<RectTransform>().sizeDelta = new Vector2(img.texture.width,img.texture.height);
+                selected.GetComponent<Image>().sprite = img;
+                costCalculator.calculateCost(part,false);
             }
             
         }
@@ -45,6 +64,6 @@ public class WoodMaterialCell : MonoBehaviour, IPointerClickHandler
 
     public void removeBorder(){
         if(transform.childCount > 0)
-            Destroy(transform.GetChild(transform.childCount -1));
+            Destroy(transform.GetChild(transform.childCount -1).gameObject);
     }
 }

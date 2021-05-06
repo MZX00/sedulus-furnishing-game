@@ -9,6 +9,7 @@ public class MiniInventoryHandler : MonoBehaviour
 {
     [SerializeField] GameObject content;
     [SerializeField] GameObject selectHandler;
+    [SerializeField] GameObject costCalculator;
     [SerializeField] GameObject furniturePartsList;
     [SerializeField] GameObject tabText;
     [SerializeField] GameObject woodMaterialList;
@@ -55,32 +56,23 @@ public class MiniInventoryHandler : MonoBehaviour
 
         tabText.GetComponentInChildren<TextMeshProUGUI>().text = "Wood";
         GameObject temp = Instantiate(woodMaterialList,new Vector3(0,0,0),Quaternion.identity);
-        for (int i = 0; i < temp.transform.childCount; i++)
-        {
-            temp.transform.GetChild(i).GetComponent<WoodMaterialCell>().selectHandler = selectHandler;
-        }
-        temp.transform.SetParent(content.transform,false);
-    }
 
-    public void changeToWoodMaterial(string name){
-        if(content.transform.childCount != 0 && content.transform.GetChild(0).name == "MaterialWood"){
-            return;
+        string name = "e";
+        //Checking if a selected object has material applied 
+        List<GameObject> tempList = selectHandler.GetComponent<SelectHandler>().getSelected(1);
+        if(tempList != null){
+            name = tempList[0].GetComponent<FurniutrePart>().MaterialType;
         }
-        if(content.transform.childCount != 0){
-            Destroy(content.transform.GetChild(0).gameObject);
-        }
-        content.GetComponent<RectTransform>().sizeDelta = new Vector2(415,1315);
-        content.GetComponent<RectTransform>().anchoredPosition = new Vector2(-207.5f,0);
-
-        tabText.GetComponentInChildren<TextMeshProUGUI>().text = "Wood";
-        GameObject temp = Instantiate(woodMaterialList,new Vector3(0,0,0),Quaternion.identity);
+        Debug.Log("name is:" + name);
         for (int i = 0; i < temp.transform.childCount; i++)
         {
             GameObject child = temp.transform.GetChild(i).gameObject;
             child.GetComponent<WoodMaterialCell>().selectHandler = selectHandler;
-            if(Regex.IsMatch(name,child.transform.GetChild(0).GetComponent<Image>().name)){
+            child.GetComponent<WoodMaterialCell>().costCalculator = costCalculator.GetComponent<CostCalculator>();
+            if(child.transform.GetComponentInChildren<TextMeshProUGUI>().text == name){
                 child.GetComponent<WoodMaterialCell>().addBorder();
             }
+            
         }
         temp.transform.SetParent(content.transform,false);
     }
