@@ -11,10 +11,30 @@ public class BuildHandler : MonoBehaviour
             Debug.Log(transform.root.GetChild(11).name);
             Transform temp = transform.root.GetChild(11);
             temp.SetParent(furniture.transform) ;
-            DontDestroyOnLoad(furniture);
-            SceneManager.LoadScene("Shop");
+            StartCoroutine(LoadAsyncShop());
+
+            
         }else{
             Debug.Log("Not stuck all");
         }
+    }
+
+    IEnumerator LoadAsyncShop()
+    {
+
+        DontDestroyOnLoad(furniture);
+
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Shop", LoadSceneMode.Additive);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        SceneManager.MoveGameObjectToScene(furniture, SceneManager.GetSceneByName("Shop"));
+        SceneManager.UnloadSceneAsync(currentScene);
+
     }
 }

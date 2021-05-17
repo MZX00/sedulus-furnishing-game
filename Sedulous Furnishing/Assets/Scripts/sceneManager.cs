@@ -67,5 +67,8 @@ public class sceneManager : MonoBehaviour
         SceneManager.LoadScene("Main Menu");
     }
 
+    public void goToWorkshop(){
+        SceneManager.LoadScene("Workshop");
+    }
     
 }

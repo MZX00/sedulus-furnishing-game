@@ -15,8 +15,6 @@ public class InventoryHandler : MonoBehaviour
     public GameObject button;
 
     void Awake(){
-        // SceneManager.MoveGameObjectToScene(variables, SceneManager.GetSceneByName(dailySummaryStr));
-        // SceneManager.UnloadSceneAsync(currentScene);
         maxIndex = 0;
         inventoryCells = new GameObject[8];
         furnitures = new GameObject[8];
