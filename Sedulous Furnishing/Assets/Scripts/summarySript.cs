@@ -15,79 +15,28 @@ public class summarySript : MonoBehaviour
     [SerializeField]
     private Button returnButton;
 
-    public GameObject variables;
-    private string shopStr;
-
-    // Start is called before the first frame update
-    private void Awake()
+    void Start()
     {
-        variables = GameObject.Find("variableObject");
+        PlayerData data = SaveManager.LoadPlayer();
+        Debug.Log("data = "+ data);
 
-        if (variables != null)
+        if (data != null)
         {
-            Object timer = variables.GetComponent<timer>();
-            if (timer == null)
-            {
-                Debug.Log("timer not found");
-            }
-            else
-            {
-                Debug.Log("timer found");
-            }
+            Debug.Log("Player Saved File exists");
 
-            Debug.Log("Player Game Object found");
-            earningText.text = "" + variables.GetComponent<Player>().DayRevenue;
-            expensesText.text = "" + variables.GetComponent<Player>().DayExpenses;
-            netincomeText.text = "" + variables.GetComponent<Player>().DayNetIncome;
+            earningText.GetComponent<Text>().text = data.dayRevenue.ToString();
+            expensesText.GetComponent<Text>().text = data.dayExpenses.ToString();
+            netincomeText.GetComponent<Text>().text = data.dayNetIncome.ToString();
         }
         else
         {
-            Debug.Log("unable to find variablezzz");
+            Debug.Log("Player Saved File do not exists");
+            Debug.Log("Player Saved File do not exists");
+            Debug.Log("Player Saved File do not exists");
+            earningText.GetComponent<Text>().text = "-999";
+            expensesText.GetComponent<Text>().text = "-999";
+            netincomeText.GetComponent<Text>().text = "-999";
         }
-
-        Button returnButton = GameObject.Find("returnButton").gameObject.GetComponent<Button>();
-        if (returnButton == null)
-        {
-            Debug.Log("returnButton button not found");
-        }
-    }
-
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //returnButton.onClick.AddListener(delegate { returnToShop(); });
-    }
-
-    public void loadShop()
-    {
-        SceneManager.LoadScene("Shop");
-    }
-
-    public void returnToShop()
-    {
-        StartCoroutine(LoadAsyncShop());
-    }
-
-    IEnumerator LoadAsyncShop()
-    {
-
-        DontDestroyOnLoad(variables);
-        Scene currentScene = SceneManager.GetActiveScene();
-        shopStr = "Shop";
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(shopStr, LoadSceneMode.Additive);
-
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-
-        SceneManager.MoveGameObjectToScene(variables, SceneManager.GetSceneByName(shopStr));
-        SceneManager.UnloadSceneAsync(currentScene);
 
     }
 

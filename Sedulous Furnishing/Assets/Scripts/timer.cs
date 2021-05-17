@@ -35,14 +35,16 @@ public class timer : MonoBehaviour
         Days.Add(3, "Thursday");
         Days.Add(4, "Firday");
         Days.Add(5, "Saturday");
+        Days.Add(6, "Saturday");
     }
 
     // Start is called before the first frame update
     void Start()
     {
 
+        // code for loading data from binay file/
+
         timerData data = SaveManager.loadDate();
-        data = SaveManager.loadDate();
         Debug.Log("data = "+ data);
 
         if (data != null)
@@ -52,20 +54,19 @@ public class timer : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Saved File do not exists");
-            Debug.Log("Saved File do not exists");
-            Debug.LogError("Saved File do not exists");
-            todayInNum = 4;
-
+            Debug.Log("Timer Saved File do not exists");
+            Debug.Log("Timer Saved File do not exists");
+            Debug.Log("Timer Saved File do not exists");
+            todayInNum = 0;
         }
 
-        todayInNum = 0;
-        todayInNum =  (sbyte)(PlayerPrefs.GetInt("dayinnum"));
+        // todayInNum = 0;
 
+        // For testing purposes I want to only change the date
         dayTextObj.text = Days[todayInNum];
         minute = 00;
         minuteTextObj.text = "00";
-        hour = 2;
+        hour = 4;
         hourTextObj.text = "0" + hour;
         StartCoroutine(changeSecond());
     }
@@ -78,7 +79,14 @@ public class timer : MonoBehaviour
         }
         set
         {
-            hour = value;
+            if(value > -1 && value < 12)
+            {
+                hour = value;
+            }
+            else
+            {
+                Debug.Log("Invalid value of hour, value = " + value);
+            }
         }
     }
 
@@ -90,7 +98,14 @@ public class timer : MonoBehaviour
         }
         set
         {
-            minute = value;
+            if(value < 60 && value > -1)
+            {
+                minute = value;
+            }
+            else
+            {
+                Debug.Log("Invalid value of hour, value = " + value);
+            }
         }
     }
 
@@ -102,7 +117,14 @@ public class timer : MonoBehaviour
         }
         set
         {
-            todayInNum = value;
+            if(value < 6 && value > -1 ) 
+            {
+                todayInNum = value;
+            }
+            else
+            {
+                Debug.Log("Invalid value of hour, value = " + value);
+            }
         }
     }
 
@@ -127,7 +149,7 @@ public class timer : MonoBehaviour
             minuteTextObj.text = "00";
             incrementHour();
         }
-        else if(minute > 9)
+        else if (minute > 9)
         {
             minuteTextObj.text = "" + minute;
         }
@@ -139,7 +161,7 @@ public class timer : MonoBehaviour
     public void incrementHour()
     {
         hour++;
-        if(hour == 12)
+        if (hour == 12)
         {
             hour = 00;
         }
@@ -151,8 +173,8 @@ public class timer : MonoBehaviour
             // changed to next scene
 
         }
-        
-        if(hour > 9)
+
+        if (hour > 9)
         {
             hourTextObj.text = "" + hour;
         }
@@ -165,12 +187,25 @@ public class timer : MonoBehaviour
     public void incrementDay()
     {
         Debug.Log("Day has been changed");
-        todayInNum++;
+        Debug.Log("todayInNum = " + todayInNum);
+        
+        if (todayInNum >= 5)
+        {
+            todayInNum = 0;
+        }
+        else
+        {
+            todayInNum++;
+        }
+        
         dayTextObj.text = Days[todayInNum];
         hour = 8;
         minute = 00;
-        PlayerPrefs.SetInt("dayinnum",todayInNum);
-        gamehandler.GetComponent<GameHandler>().ShowDaysSummary();
+
+        // save the data of time
         SaveManager.saveDate(this);
+        SaveManager.saveGamehandler(gamehandler.GetComponent<GameHandler>());
+        gamehandler.GetComponent<GameHandler>().ShowDaysSummary();
     }
+
 }

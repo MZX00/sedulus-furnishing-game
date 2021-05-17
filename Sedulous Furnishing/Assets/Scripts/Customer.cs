@@ -337,32 +337,17 @@ public class Customer : MonoBehaviour
 
 
 /* 
+ * Bugs:
  * 
- * (Done) (1) Correct movements (Done Donea Done)
- * (Done) (2) sell furniture will be in game handler, sell button will execute sellfurniture of gamehandler(customer, furniture);(Done Donea Done)
- * (Done) (3) patience should continue when requirement popup is closed  // need to work on this 
- * (Done) (4) Form proper queue (Done Donea Done)
- * (Done) (5) Random generation of customer 
- * (Done) (6) Add timer and it's functionality (Highest priority) (Done Donea Done)
+ * (1) csl and level continuing from where it should be continued
+ * (2) 
  * 
- * (Done) (8) When day ends, change scene(to new scene) (Done Donea Done)
- * (Done) (9) Money, increase, decrease, count, how much sold in the entire day (Done Donea Done)
- * (Done) (10) customer satisfaction level implementation and changing of icon.
  * 
- * (Done) (1) correct bugs 
- * (2) save and resume game implementaion 
- * (Done) (3) level handler script
- * (if possible) (7) Customer Request type 
- * 
- * (Add Animation if possible)
- * 
- * Add price 
- * save baisc information, save, money, day, even if game ends and is restarted
- * 
- * (1) create game script ( Save : player data (money, day, score, csl)
- * (2) scene transition will not have any affect in customers and timer 
- * (3) add sound, when customer reaches to counter a bell sound will ring 
- * (4) 
+ * Tasks
+ * (1) scene transition will not have any affect in customers and timer 
+ * (2) add sound, when customer reaches to counter a bell sound will ring 
+ * (3) Customer Request type 
+ * (4) Add Animation 
  * 
  * 
  * 

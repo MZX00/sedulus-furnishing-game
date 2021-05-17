@@ -10,47 +10,14 @@ public class GameHandler : MonoBehaviour
     [SerializeField]
     private GameObject UI;
     [SerializeField]
-    private GameObject levelIcon;
-    [SerializeField]
     private GameObject cslIcon;
     public GameObject canvas;
     public GameObject cusomterPrefab;
     public GameObject showcase;
     public GameObject player;
-    public GameObject variables;
     public GameObject SpeechBubble;
 
 
-    [SerializeField]
-    private Sprite level1;
-    [SerializeField]
-    private Sprite level2;
-    [SerializeField]
-    private Sprite level3;
-    [SerializeField]
-    private Sprite level4;
-    [SerializeField]
-    private Sprite level5;
-    [SerializeField]
-    private Sprite level6;
-    [SerializeField]
-    private Sprite level7;
-    [SerializeField]
-    private Sprite level8;
-    [SerializeField]
-    private Sprite level9;
-    [SerializeField]
-    private Sprite level10;
-    [SerializeField]
-    private Sprite level11;
-    [SerializeField]
-    private Sprite level12;
-    [SerializeField]
-    private Sprite level13;
-    [SerializeField]
-    private Sprite level14;
-    [SerializeField]
-    private Sprite level15;
     [SerializeField]
     private Sprite happy;
     [SerializeField]
@@ -58,8 +25,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField]
     private Sprite sad;
 
-    private Sprite[] levels;
-    private int level;
+    
     private List<GameObject> customers;
     private sbyte csl; // Customer satisfaction level
                      //    public GameObject requirenmentPopup;
@@ -74,6 +40,7 @@ public class GameHandler : MonoBehaviour
 
     public void increaseCsl()
     {
+        Debug.Log("csl = " + csl);
         if (csl < 15)
         {
             csl = (sbyte) (csl + 3);
@@ -139,28 +106,33 @@ public class GameHandler : MonoBehaviour
     void Awake(){
  //       requirenmentPopup.SetActive(false);
         customers = new List<GameObject>();
-        player.GetComponent<Player>().setMoney(500);
-        csl = 7;
-        level = 1;
-        levels = new Sprite[] { level1, level1, level2, level3, level4, level5, level6, level7, level8, level9, level10, level11, level12, level13, level14};
+//        player.GetComponent<Player>().setMoney(500);
     }
     
     void Start(){
         //GameObject customer = (GameObject) customers[0];
-        variables = GameObject.Find("variableObject");
 
-        if(variables != null) 
+        gamehandlerData data = SaveManager.loadGamehandler();
+
+        if (data != null)
         {
-            player.GetComponent<Player>().setMoney(variables.GetComponent<Player>().getMoney());
-            timer.GetComponent<timer>().Minute = variables.GetComponent<timer>().Minute;
-            timer.GetComponent<timer>().Hour = variables.GetComponent<timer>().Hour;
-            timer.GetComponent<timer>().TodayInNum = variables.GetComponent<timer>().TodayInNum;
-            csl = variables.GetComponent<GameHandler>().csl;
+            Debug.Log("Game Handler Saved File exist");
+            csl = data.csl;
+            Debug.Log("value of csl =" + csl);
+        }
+        else
+        {
+            Debug.Log("Game Handler  Saved File do not exists");
+            Debug.Log("Game Handler  Saved File do not exists");
+            Debug.Log("Game Handler  Saved File do not exists");
+            csl = 7;
+
         }
 
-        csl = 7;
         changeCslIcon();
 
+
+        Debug.Log("csl = " + csl);
         StartCoroutine(generateCustomers());
     }
 
@@ -186,11 +158,8 @@ public class GameHandler : MonoBehaviour
                 Debug.Log("customers.Count = " + customers.Count);
             } else {
                 yield return new WaitForSeconds(3);
-                Debug.Log("Generate Customer running");
                 int hour = timer.GetComponent<timer>().Hour;
                 float ranNum = Random.Range(0.0f, 100f);
-                Debug.Log("randNum" + ranNum);
-                Debug.Log("hour = " + hour);
                 /* if (hour < 12 && hour >= 8)
                  {
 
@@ -269,9 +238,7 @@ public class GameHandler : MonoBehaviour
     public void sellFurniturToCustomer(GameObject cust, GameObject furniture)
     {
         int fid = furniture.GetComponent<Furniture>().getFID();
-        Debug.Log("The fid of selected furniture is " + fid);
         int price = furniture.GetComponent<Furniture>().getPrice();
-        Debug.Log("The price fo selected furniture is " + price);
         showcase.GetComponent<FurnitureShowcase>().removeFurniturefromCell(fid);
         
         if (csl > 12)
@@ -290,19 +257,8 @@ public class GameHandler : MonoBehaviour
         increaseCsl();
         player.GetComponent<Player>().calculateScore(cust.GetComponent<Customer>().Patience, price);
         Destroy(furniture);
-        changeLevelIcon();
+        player.GetComponent<Player>().changeLevelIcon();
         //customer.GetComponent<Customer>().leaveShop();
-    }
-
-    private void changeLevelIcon()
-    {
-        int score = player.GetComponent<Player>().getScore();
-        if (score < (level+1)*100)
-        {
-            level++;
-            levelIcon.GetComponent<Image>().sprite = levels[level];
-        }
-
     }
 
 
@@ -326,85 +282,17 @@ public class GameHandler : MonoBehaviour
 
     public void ShowDaysSummary()
     {
-        Debug.Log("Running Game handler");
-        StartCoroutine(LoadAsyncDailySummary());
+        SaveManager.SavePlayer(player.GetComponent<Player>());
         SceneManager.LoadScene("Day Summary");
     }
 
-    IEnumerator LoadAsyncDailySummary()
-    {
-        variables = GameObject.Find("variableObject");
-        DontDestroyOnLoad(variables);
-        Player playerScript = player.GetComponent<Player>();
-
-        variables.GetComponent<Player>().setMoney(player.GetComponent<Player>().getMoney());
-        variables.GetComponent<Player>().DayExpenses = player.GetComponent<Player>().DayExpenses;
-        variables.GetComponent<Player>().DayNetIncome = player.GetComponent<Player>().DayNetIncome;
-        variables.GetComponent<Player>().DayRevenue = player.GetComponent<Player>().DayRevenue;
-        variables.GetComponent<timer>().Minute = timer.GetComponent<timer>().Minute;
-        variables.GetComponent<timer>().Hour = timer.GetComponent<timer>().Hour;
-        variables.GetComponent<timer>().TodayInNum = timer.GetComponent<timer>().TodayInNum;
-        variables.GetComponent<GameHandler>().csl = this.csl;
-
-        Scene currentScene = SceneManager.GetActiveScene();
-        dailySummaryStr = "Day Summary";
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(dailySummaryStr, LoadSceneMode.Additive);
-        
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-        SceneManager.MoveGameObjectToScene(variables, SceneManager.GetSceneByName(dailySummaryStr));
-        SceneManager.UnloadSceneAsync(currentScene);
-    }
     public void goToWorkshop()
     {
+        SaveManager.saveDate(timer.GetComponent<timer>());
+        SaveManager.SavePlayer(player.GetComponent<Player>());
         SceneManager.LoadScene("Workshop");
     }
 
 
 }
-
-
-
-/*
- * 
- * - Customer satisfaction can be reduced by rejecting orders (-1), letting their patience bar fillup (-1), or overcharging furniture (-1)
- * - Customer satisfaction can be increased by selling furniture (+1)
- * - (overcharging furniture) customer overpriced will be randomly generated from 1.25 to 2 and if the price falls within that range then satisfaction (-1)
- * - Starting satisfaction is neutral with the value of 7
- * 
- * 
- * Customer satisfaction will have 3 levels:
-
-Happy: 
-----------------
-- When customer satisfaction is between 12 and 15 (3 customers can be uncatered before back to neutral)
-- Customer will give tips ( +$10) and have increased wait time
-
-Neutral:
-----------------
-- When customer satisfaction is between  5 and 12 (in the neutral mode need to cater to 7 customers to get to happy)
-- Customer will have normal wait time ( no advantages)
-
-
-Angry: 
-----------------
-- When customer satisfaction is between 0 and 5 (in the angry mode need to tap 5 customers instantly to get to neutral)
-- Customer will have reduced waiting time and will pay the cost price (-$profit)
-- This will be shown in the customer requirement popup
-  
-  
-  
- * Bugs which needs to be corrected:
- * 1) csl not working properly (and size not fit properly) ( Done)
- * 2) pop up should only be clickable when there is atleast on furniute in showcase (Done)
- * 3) maximum 3 customers can form a queue (Done)
- * 4) Customers patience should only start ticking when they reach counter (Done)
- * 5) 
- * 
- */
-
-
-
 
