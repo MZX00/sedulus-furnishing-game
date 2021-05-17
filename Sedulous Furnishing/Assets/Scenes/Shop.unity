@@ -713,7 +713,6 @@ GameObject:
   - component: {fileID: 390352621}
   - component: {fileID: 390352620}
   - component: {fileID: 390352619}
-  - component: {fileID: 390352622}
   m_Layer: 5
   m_Name: workshopButton
   m_TagString: Untagged
@@ -784,8 +783,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 390352622}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1667557858}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: goToWorkshop
         m_Mode: 1
         m_Arguments:
@@ -834,19 +833,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390352617}
   m_CullTransparentMesh: 0
---- !u!114 &390352622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 390352617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8fec831e8cd1f846acfc310eef5bf41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
 --- !u!1 &423534532
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,109 +1156,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &496326100
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 496326104}
-  - component: {fileID: 496326103}
-  - component: {fileID: 496326102}
-  - component: {fileID: 496326101}
-  m_Layer: 0
-  m_Name: variableObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &496326101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496326100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccc301b911e176f4aa5f919f65eeb644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: {fileID: 0}
-  UI: {fileID: 0}
-  levelIcon: {fileID: 0}
-  cslIcon: {fileID: 0}
-  canvas: {fileID: 0}
-  cusomterPrefab: {fileID: 7830936813157438442, guid: 67575e0d5777ad349a12b5621f44a118, type: 3}
-  showcase: {fileID: 0}
-  player: {fileID: 0}
-  variables: {fileID: 0}
-  SpeechBubble: {fileID: 0}
-  level1: {fileID: 0}
-  level2: {fileID: 0}
-  level3: {fileID: 0}
-  level4: {fileID: 0}
-  level5: {fileID: 0}
-  level6: {fileID: 0}
-  level7: {fileID: 0}
-  level8: {fileID: 0}
-  level9: {fileID: 0}
-  level10: {fileID: 0}
-  level11: {fileID: 0}
-  level12: {fileID: 0}
-  level13: {fileID: 0}
-  level14: {fileID: 0}
-  level15: {fileID: 0}
-  happy: {fileID: 0}
-  neutral: {fileID: 0}
-  sad: {fileID: 0}
---- !u!114 &496326102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496326100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ff7c7d382d65ae4697220dde2dda596, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gamehandler: {fileID: 0}
-  player: {fileID: 0}
-  minuteTextObj: {fileID: 0}
-  hourTextObj: {fileID: 0}
-  dayTextObj: {fileID: 0}
---- !u!114 &496326103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496326100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18b8dc7d45559df4da837ea237ff74e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moneyText: {fileID: 0}
---- !u!4 &496326104
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496326100}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6278177, y: -0.01630963, z: -5.469716}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2137,6 +2020,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1200468173}
   m_CullTransparentMesh: 1
+--- !u!1 &1317835053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1317835054}
+  m_Layer: 0
+  m_Name: ShopData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1317835054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317835053}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.06707351, y: -0.108859986, z: 376.6046}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1413385209
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,29 +2464,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: {fileID: 1106946846}
   UI: {fileID: 2135205774}
-  levelIcon: {fileID: 257561005}
   cslIcon: {fileID: 1956239591}
   canvas: {fileID: 1274308945049616790}
   cusomterPrefab: {fileID: 7830936813157438442, guid: 67575e0d5777ad349a12b5621f44a118, type: 3}
   showcase: {fileID: 1413385209}
   player: {fileID: 1725845528}
-  variables: {fileID: 0}
   SpeechBubble: {fileID: 1098781044711750135, guid: 63d86b92999ea194fb14d37c89ded1ab, type: 3}
-  level1: {fileID: 21300000, guid: 8b343ecc5ddcbcf4c8c23dcd5c268457, type: 3}
-  level2: {fileID: 21300000, guid: 7c2a204a595e7494a8521db7a2ecc231, type: 3}
-  level3: {fileID: 21300000, guid: e8306bb7b9c5dba49b983f22a7b40f58, type: 3}
-  level4: {fileID: 21300000, guid: ca5ebd24773e3094d90de47760af2452, type: 3}
-  level5: {fileID: 21300000, guid: 32f90356e2da37849a7fc9671df6c0f7, type: 3}
-  level6: {fileID: 21300000, guid: f063a83227fd8014c98cacbbc93d1cf9, type: 3}
-  level7: {fileID: 21300000, guid: 76ffc549baf3d3a4889c91025ec1ac6c, type: 3}
-  level8: {fileID: 21300000, guid: 2f4129f9937a4e44aa71f2177f1942d3, type: 3}
-  level9: {fileID: 21300000, guid: cf7659b8f99e3a746806876495c51a23, type: 3}
-  level10: {fileID: 21300000, guid: 6edb11c66596e8a418414c8f3a9e062e, type: 3}
-  level11: {fileID: 0}
-  level12: {fileID: 0}
-  level13: {fileID: 0}
-  level14: {fileID: 0}
-  level15: {fileID: 0}
   happy: {fileID: 21300000, guid: 59ce37d91b4d85b4faddb2e2f75c790b, type: 3}
   neutral: {fileID: 21300000, guid: b66689b133c53e74f9025b70fcecde01, type: 3}
   sad: {fileID: 21300000, guid: 1ed280ccaf799b74a9f5330c0ab98454, type: 3}
@@ -2904,6 +2800,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyText: {fileID: 1865144322}
+  levelIcon: {fileID: 257561005}
+  level1: {fileID: 21300000, guid: 8b343ecc5ddcbcf4c8c23dcd5c268457, type: 3}
+  level2: {fileID: 21300000, guid: 7c2a204a595e7494a8521db7a2ecc231, type: 3}
+  level3: {fileID: 21300000, guid: e8306bb7b9c5dba49b983f22a7b40f58, type: 3}
+  level4: {fileID: 21300000, guid: ca5ebd24773e3094d90de47760af2452, type: 3}
+  level5: {fileID: 21300000, guid: 32f90356e2da37849a7fc9671df6c0f7, type: 3}
+  level6: {fileID: 21300000, guid: f063a83227fd8014c98cacbbc93d1cf9, type: 3}
+  level7: {fileID: 21300000, guid: 76ffc549baf3d3a4889c91025ec1ac6c, type: 3}
+  level8: {fileID: 21300000, guid: 2f4129f9937a4e44aa71f2177f1942d3, type: 3}
+  level9: {fileID: 21300000, guid: cf7659b8f99e3a746806876495c51a23, type: 3}
+  level10: {fileID: 21300000, guid: 6edb11c66596e8a418414c8f3a9e062e, type: 3}
 --- !u!1 &1865144320
 GameObject:
   m_ObjectHideFlags: 0
@@ -3187,8 +3094,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -534, y: 617.51}
-  m_SizeDelta: {x: 320.87, y: 113.1}
+  m_AnchoredPosition: {x: -480.23, y: 617.51}
+  m_SizeDelta: {x: 431.94, y: 113.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2131953591
 MonoBehaviour:

@@ -20,7 +20,7 @@ public static class SaveManager
         string path = Application.persistentDataPath + "/PlayerData";
         if (File.Exists(path))
         {
-            Debug.Log("Save file founded in " + path);
+            Debug.Log("Player Save file founded in " + path);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
@@ -31,8 +31,15 @@ public static class SaveManager
         }
         else
         {
-            Debug.Log("Save file not found in " + path);
-            return null;
+            BinaryFormatter formatter = new BinaryFormatter();
+            // string path = Application.persistentDataPath + "/PlayerData";
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            PlayerData data = new PlayerData();
+            formatter.Serialize(stream, data);
+            stream.Close();
+
+            return data;
         }
     }
 
@@ -54,7 +61,7 @@ public static class SaveManager
         string path = Application.persistentDataPath + "/timeData";
         if (File.Exists(path))
         {
-            Debug.Log("Date file founded in " + path);
+            Debug.Log("Timer Date file founded in " + path);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
@@ -65,8 +72,16 @@ public static class SaveManager
         }
         else
         {
-            Debug.Log("Date file not found in " + path);
-            return null;
+            Debug.Log("Timer Date file not found in " + path);
+            
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            timerData data = new timerData();
+            formatter.Serialize(stream, data);
+            stream.Close();
+
+            return data;
         }
     }
 
@@ -86,7 +101,7 @@ public static class SaveManager
         string path = Application.persistentDataPath + "/ghData";
         if (File.Exists(path))
         {
-            Debug.Log("Date file founded in " + path);
+            Debug.Log("gamehandler file founded in " + path);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
@@ -98,7 +113,16 @@ public static class SaveManager
         else
         {
             Debug.Log("Date file not found in " + path);
-            return null;
+
+            BinaryFormatter formatter = new BinaryFormatter();
+//            string path = Application.persistentDataPath + "/ghData";
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            gamehandlerData data = new gamehandlerData();
+            formatter.Serialize(stream, data);
+            stream.Close();
+
+            return data;
         }
     }
 }

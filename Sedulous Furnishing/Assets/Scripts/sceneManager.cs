@@ -1,24 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class sceneManager : MonoBehaviour
 {
-
-    public GameObject player;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     // when player clickes help button from main menu
     public void mainMenuToHelp()
     {
@@ -37,12 +25,8 @@ public class sceneManager : MonoBehaviour
 
     // When Start Button is clicked
     // Game is resumed where it was left off
-    public void mainMenuToStartGame()
-    {
-        SceneManager.LoadScene("Shop");
-    }
 
-    // when player clicks inventory Butoon
+    // when player clicks inventory Button
     public void firstSceneToInventory()
     {
         SceneManager.LoadScene("inventoryScene");
@@ -57,15 +41,39 @@ public class sceneManager : MonoBehaviour
     // When Player wants to start new game
     public void startNewGame()
     {
+        string path = Application.persistentDataPath + "/PlayerData";
+        try
+        {
+            if(File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            path = Application.persistentDataPath + "/timeData";
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            path = Application.persistentDataPath + "/ghData";
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex);
+        }
         SceneManager.LoadScene("Shop");
-        player.GetComponent<Player>().setMoney(500);
-        Debug.Log("Amount of Money = " + player.GetComponent<Player>().getMoney());
     }
 
     // Go to main menu from Gameplay
     public void gameplayToMainMenu() {
         SceneManager.LoadScene("Main Menu");
     }
-
     
 }
