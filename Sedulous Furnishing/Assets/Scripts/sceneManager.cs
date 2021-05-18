@@ -33,7 +33,11 @@ public class sceneManager : MonoBehaviour
                 Transform temp = furniture.transform.GetChild(0);
                 temp.gameObject.SetActive(true);
                 temp.SetParent(transform.root);
-                temp.GetComponent<Button>().onClick.RemoveAllListeners();
+                if (temp.GetComponent<Button>() != null)
+                {
+                    temp.GetComponent<Button>().onClick.RemoveAllListeners();
+                }
+
                 foreach (Transform child in temp) {
                     GameObject.Destroy(child.gameObject);
                 }
@@ -81,8 +85,6 @@ public class sceneManager : MonoBehaviour
     public void startNewGame()
     {
         SceneManager.LoadScene("Shop");
-        player.GetComponent<Player>().setMoney(500);
-        // Debug.Log("Amount of Money = " + player.GetComponent<Player>().getMoney());
     }
 
     // Go to main menu from Gameplay

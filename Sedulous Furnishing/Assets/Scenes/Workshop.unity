@@ -323,7 +323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   furniturePrefab: {fileID: 7372309461664897982, guid: 4ae2f483175fe7446b99352519b5d853, type: 3}
-  can: {fileID: 1339362191}
+  selectHandler: {fileID: 1228366831}
 --- !u!114 &243323176
 MonoBehaviour:
   m_ObjectHideFlags: 0

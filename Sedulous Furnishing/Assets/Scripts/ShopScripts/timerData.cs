@@ -10,10 +10,10 @@ public class timerData
     public sbyte hour;
     public sbyte min;
 
-
     public timerData()
     {
         dayInNum = 0;
+
     }
     public timerData(timer t)
     {

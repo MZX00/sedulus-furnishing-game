@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -6,53 +7,78 @@ public static class SaveManager
 {
     public static void SavePlayer(Player player)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/PlayerData";
-        FileStream stream = new FileStream(path, FileMode.Create);
+        try
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = Application.persistentDataPath + "/PlayerData";
+            FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player);
-        formatter.Serialize(stream, data);
-        stream.Close();
+            PlayerData data = new PlayerData(player);
+            formatter.Serialize(stream, data);
+            stream.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+        
     }
 
     public static PlayerData LoadPlayer()
     {
+
         string path = Application.persistentDataPath + "/PlayerData";
-        if (File.Exists(path))
+        try
         {
-            Debug.Log("Player Save file founded in " + path);
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            if (File.Exists(path))
+            {
+                Debug.Log("Player Save file founded in " + path);
+                BinaryFormatter formatter = new BinaryFormatter();
+                FileStream stream = new FileStream(path, FileMode.Open);
 
-            PlayerData data =  formatter.Deserialize(stream) as PlayerData;
-            stream.Close();
+                PlayerData data = formatter.Deserialize(stream) as PlayerData;
+                stream.Close();
 
-            return data;
+                return data;
+            }
+            else
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                // string path = Application.persistentDataPath + "/PlayerData";
+                FileStream stream = new FileStream(path, FileMode.Create);
+
+                PlayerData data = new PlayerData();
+                formatter.Serialize(stream, data);
+                stream.Close();
+
+                return data;
+            }
         }
-        else
+        catch (Exception e)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            // string path = Application.persistentDataPath + "/PlayerData";
-            FileStream stream = new FileStream(path, FileMode.Create);
-
-            PlayerData data = new PlayerData();
-            formatter.Serialize(stream, data);
-            stream.Close();
-
-            return data;
+            Debug.Log(e);
+            return null;
         }
+        
     }
 
 
     public static void saveDate(timer t)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/timeData";
-        FileStream stream = new FileStream(path, FileMode.Create);
+        try
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = Application.persistentDataPath + "/timeData";
+            FileStream stream = new FileStream(path, FileMode.Create);
 
-        timerData data = new timerData(t);
-        formatter.Serialize(stream, data);
-        stream.Close();
+            timerData data = new timerData(t);
+            formatter.Serialize(stream, data);
+            stream.Close();
+        }
+        catch(Exception e){
+            Debug.Log(e);
+        }
+        
     }
 
 
@@ -126,3 +152,15 @@ public static class SaveManager
         }
     }
 }
+
+
+/*
+ * Inventroy ( cell[] )      array level 1
+ * - Cell ( index position (int) )  array level 2
+ * -- Furniture ( parts[] ) 
+ * --- parts ( position, name, material )
+ * ---- position ( float[3] )
+ * ---- name ( String )
+ * ---- material ( String )
+ * 
+ */

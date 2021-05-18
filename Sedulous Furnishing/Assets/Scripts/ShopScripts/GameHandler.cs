@@ -11,6 +11,9 @@ public class GameHandler : MonoBehaviour
     private GameObject UI;
     [SerializeField]
     private GameObject cslIcon;
+    [SerializeField]
+    private GameObject customRequirementCanvas;
+
     public GameObject canvas;
     public GameObject cusomterPrefab;
     public GameObject showcase;
@@ -137,9 +140,6 @@ public class GameHandler : MonoBehaviour
     }
 
     void Update(){
-        /*if(customers.Count == 0){
-            spawnCustomer();
-        }*/
         
     }
 
@@ -201,6 +201,7 @@ public class GameHandler : MonoBehaviour
         GameObject customer = Instantiate(cusomterPrefab, new Vector3(-6.62f, -7.0f, 0), Quaternion.identity);
         // add customer to List<GameObject>
         customer.GetComponent<Customer>().RequirementCanvas = canvas;
+        customer.GetComponent<Customer>().customRequirementCanvas = customRequirementCanvas;
         customer.GetComponent<Customer>().showcase = showcase;
         customer.GetComponent<Customer>().player = player;
         customer.GetComponent<Customer>().gameHandler = this.gameObject;

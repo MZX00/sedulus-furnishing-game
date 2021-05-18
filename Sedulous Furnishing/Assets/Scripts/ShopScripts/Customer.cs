@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+
 
 
 public class Customer : MonoBehaviour
@@ -11,6 +13,7 @@ public class Customer : MonoBehaviour
     private float speed = 0.4f;
     public GameObject UI;
     public GameObject gameHandler;
+    public GameObject customRequirementCanvas;
     public GameObject RequirementCanvas; // requirement pop up canvas
     public GameObject player; 
     public GameObject showcase;
@@ -21,6 +24,8 @@ public class Customer : MonoBehaviour
 
     [SerializeField]
     private int patience; // count down when customer reaches coutner 
+    [SerializeField]
+    private int countdown;
 
     private sbyte journey; // +1 means that customer needs to go to counter and place their order 
     // 0 means that customer is in counter 
@@ -29,22 +34,26 @@ public class Customer : MonoBehaviour
     private float timerPatience = 0.0f; // to check for  1 second
     private bool isattended;
     private bool orderplaced; // customer has placed his order or not 
-    private sbyte customerType; // 1 means customer will return, 0 means customer will purchase thee furniture onspot
+    private bool isCustomOrder; // true means customer will have a custom requirement, false means customer will purchase thee furniture onspot
     private Rigidbody2D rb;
     private bool colliding;
     private bool itemsold;
-
-    private void Awake()
-    {
-
-    }
-
 
     void Start()
     {
         journey = 1;
         orderplaced = false;
-        customerType = 1;
+        
+        float ranNum = Random.Range(0.0f, 100f);
+        if(ranNum < 00.0f)
+        {
+            isCustomOrder = true;
+        }
+        else
+        {
+            isCustomOrder = false;
+        }
+
         speechActive = false;
         isattended = false;
         //RequirementCanvas = GameObject.Find("Game Handler").GetComponent<GameHandler>().canvas;
@@ -60,7 +69,6 @@ public class Customer : MonoBehaviour
     {
         movement();
     }
-
 
     public sbyte Journey
     {
@@ -109,7 +117,7 @@ public class Customer : MonoBehaviour
             return false;
         }else{
             // If patience has ended then decrease customer satisfaction level
-            GameObject.Find("Game Handler").GetComponent<GameHandler>().decreaseCsl();
+            gameHandler.GetComponent<GameHandler>().decreaseCsl();
             return true;
         }
     }
@@ -118,15 +126,10 @@ public class Customer : MonoBehaviour
     {
         if (journey == 1) //When Customer is moving towards counter
         {
-            //transform.Translate(0, 1 * Time.deltaTime, 0);
-            //rb.AddForce(transform.up * speed * Time.deltaTime, ForceMode2D.Impulse);
             if (!colliding)
             {
                 transform.Translate(0, 1 * Time.deltaTime, 0);
             }
-
-            //Vector3 newPosition = transform.position + (transform.up*Time.deltaTime);
-            //rb.MovePosition(newPosition);
             if (transform.position.y > -0.53f)
             {
                 Debug.Log("Customer reached counter");
@@ -143,24 +146,32 @@ public class Customer : MonoBehaviour
             if (!speechActive)
             {
                 rb.velocity = Vector3.zero;
-                //UI.GetComponent<uiscript>().showBubble();
+
                 // Need to render sprite when customer reaches counter 
                 // and stop sprite render when customer goes out from counter  
-                
-                if ( !GameObject.Find("Game Handler").GetComponent<GameHandler>().isShowcaseEmpty())
+
+                if (isCustomOrder)
                 {
-                    if (!itemsold)
+                    openBubble();
+                    speechActive = true;
+                }
+                else
+                {
+                    if (!GameObject.Find("Game Handler").GetComponent<GameHandler>().isShowcaseEmpty())
                     {
-                        openBubble();
-                        speechActive = true;
+                        if (!itemsold)
+                        {
+                            openBubble();
+                            speechActive = true;
+                        }
+
                     }
-                
                 }
             }
 
             if (!isattended)
             {
-                
+
                 timerPatience += Time.deltaTime;
                 // after every second the value of patience is decreased by 1
                 if (timerPatience > 1.0f)
@@ -168,9 +179,6 @@ public class Customer : MonoBehaviour
                     if (decreasePatience())
                     {
                         journey = -1;
-                        //UI.GetComponent<uiscript>().deleteBubble();
-                        deleteBubble();
-                        speechActive = false;
                     }
                     timerPatience = 0.0f;
                     Debug.Log("Patience = " + patience);
@@ -183,7 +191,6 @@ public class Customer : MonoBehaviour
         {
             if (speechActive) {
                 speechActive = false;
-                //UI.GetComponent<uiscript>().deleteBubble();
                 deleteBubble();
             }
             
@@ -216,7 +223,59 @@ public class Customer : MonoBehaviour
         instance.transform.parent = UI.transform;
         instance.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         bubbleButton = instance.GetComponent<Button>();
-        bubbleButton.onClick.AddListener(delegate { openRequirementCanvas(); });
+        if (!isCustomOrder)
+        {
+            bubbleButton.onClick.AddListener(delegate { openRequirementCanvas(); });
+        }
+        else
+        {
+            bubbleButton.onClick.AddListener(delegate { openCustomRequirementCanvas(); });
+        }
+    }
+
+
+    public void customRequestDeclined()
+    {
+        customRequirementCanvas.SetActive(false);
+        journey = -1;
+    }
+
+    public void customRequestAccepted()
+    {
+        customRequirementCanvas.SetActive(false);
+        
+        
+        SceneManager.LoadScene("Workshop");
+    }
+
+    public void openCustomRequirementCanvas()
+    {
+        isattended = true;
+        deleteBubble();
+        speechActive = false;
+        customRequirementCanvas.SetActive(true);
+        
+
+        Button declineButton = customRequirementCanvas.transform.Find("Decline Button").GetComponent<Button>();
+
+        if(declineButton == null)
+        {
+            Debug.Log("Decline Button not found");
+        }
+
+        declineButton.onClick.AddListener(customRequestDeclined);
+
+        
+        Button acceptButton = customRequirementCanvas.transform.Find("Accept Button").GetComponent<Button>();
+
+        if (acceptButton == null)
+        {
+            Debug.Log("Accept Button not found");
+        }
+
+        acceptButton.onClick.AddListener(customRequestAccepted);
+
+
     }
 
     public void openRequirementCanvas()
@@ -224,6 +283,7 @@ public class Customer : MonoBehaviour
 
         isattended = true;
         deleteBubble();
+        speechActive = false;
         RequirementCanvas.SetActive(true);
 
         Furniture = gameHandler.GetComponent<GameHandler>().selectCustomFurniture();
@@ -232,6 +292,7 @@ public class Customer : MonoBehaviour
         {
             // create the instance of the furniture customer selected
             GameObject furn = Instantiate(Furniture, new Vector3(0, 0, 0), Quaternion.identity);
+            
             // save the slected furniture in customer's class
             Furniture = furn;
 
@@ -240,8 +301,6 @@ public class Customer : MonoBehaviour
             furntrt.anchorMax = new Vector2(0.5f, 0.5f);
             furntrt.anchorMin = new Vector2(0.5f, 0.5f);
             furntrt.pivot = new Vector2(0.5f, 0.5f);
-
-            //Find("Furniture Panel")
         }
         else
         {
@@ -319,7 +378,7 @@ public class Customer : MonoBehaviour
     public void closeRequirementCanvas()
     {
         RequirementCanvas.SetActive(false);
-        GameObject.Find("Game Handler").GetComponent<GameHandler>().decreaseCsl();
+        gameHandler.GetComponent<GameHandler>().decreaseCsl();
         // customer will return
         journey = -1;
     }
@@ -337,17 +396,15 @@ public class Customer : MonoBehaviour
 
 
 /* 
- * Bugs:
- * 
- * (1) csl and level continuing from where it should be continued
- * (2) 
- * 
- * 
  * Tasks
- * (1) scene transition will not have any affect in customers and timer 
+ * (1) Customer Request type 
  * (2) add sound, when customer reaches to counter a bell sound will ring 
- * (3) Customer Request type 
- * (4) Add Animation 
+ * (3) Add Animation 
+ * 
+ * Center heading "parts list"
+ * 1) name of the part  eg .Arm
+ * 2) matrial 
+ * 3) quantity
  * 
  * 
  * 
