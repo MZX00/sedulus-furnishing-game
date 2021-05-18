@@ -36,7 +36,7 @@ public class SelectHandler : MonoBehaviour
             removeBorder(part);
             Debug.Log("Item Removed");
         }
-        if(selectedParts.Count == 1){
+        if(selectedParts.Count == 1 && !Regex.IsMatch(part.name,"(StuckPart)")){
             miniInventoryHandler.GetComponent<MiniInventoryHandler>().changeToWoodMaterial();
         }else{
             miniInventoryHandler.GetComponent<MiniInventoryHandler>().changeToFurnitureParts();

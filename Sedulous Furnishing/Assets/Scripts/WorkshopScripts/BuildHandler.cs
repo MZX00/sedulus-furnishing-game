@@ -11,8 +11,8 @@ public class BuildHandler : MonoBehaviour
             Debug.Log(transform.root.GetChild(11).name);
             Transform temp = transform.root.GetChild(11);
             temp.SetParent(furniture.transform) ;
+            furniture.SetActive(false);
             StartCoroutine(LoadAsyncShop());
-
             
         }else{
             Debug.Log("Not stuck all");
