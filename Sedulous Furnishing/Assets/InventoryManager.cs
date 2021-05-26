@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
     public string[] Names;
     public GameObject[] Contents;
     public Text Money;
-    public GameObject NotEnoughMoney;
+    public GameObject NotEnoughMoney,NotPurchasedYet;
     string Value;
 
     private int money;
@@ -20,8 +20,8 @@ public class InventoryManager : MonoBehaviour
         if (data != null)
         {
             Debug.Log("Saved File exists");
-            money = data.money;
-            //money = 500000;
+            //money = data.money;
+            money = 50000;
         }
         else
         {
@@ -77,6 +77,28 @@ public class InventoryManager : MonoBehaviour
         CheckPurchases();
     }
 
+    public void ReturnProduct( int num)
+    {
+        Value = "Inv" + num;
+        if(PlayerPrefs.GetInt(Value)>0)
+        {
+            PlayerPrefs.SetInt(Value, PlayerPrefs.GetInt(Value) - 1);
+            money += 100;
+            Money.text = money.ToString();
+        }
+        else
+        {
+            NotPurchasedYet.SetActive(true);
+            Invoke("HideNotPurchased", 2.0f);
+        }
+        CheckPurchases();
+
+    }
+
+    void HideNotPurchased()
+    {
+        NotPurchasedYet.SetActive(false);
+    }
     void HideNotEnoughMoney()
     {
         NotEnoughMoney.SetActive(false);
