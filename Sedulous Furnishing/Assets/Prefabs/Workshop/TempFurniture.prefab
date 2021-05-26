@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7372309461664897980}
   - component: {fileID: 7372309461664897983}
   m_Layer: 5
-  m_Name: Furniture
+  m_Name: TempFurniture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class FurnitureShowcase : MonoBehaviour
 {
-    public GameObject cellPrefab;
-    public GameObject furniturePrefab;
-    public GameObject Inventory;
+    [SerializeField] GameObject cellPrefab;
+    [SerializeField] GameObject Inventory;
     private GameObject[] furnitureCells;
     private GameObject[] furnitures;
 
@@ -15,14 +14,15 @@ public class FurnitureShowcase : MonoBehaviour
     private int tempIndex;
 
     private int index;
+    [SerializeField] private int cellCount;
 
     void Awake(){
         index = 0;
         furnitureCount = 0;
         tempIndex = -1;
-        furnitureCells = new GameObject[8];
-        furnitures = new GameObject[8];
-        for(int i = 0; i < 8; i++){
+        furnitureCells = new GameObject[cellCount];
+        furnitures = new GameObject[cellCount];
+        for(int i = 0; i < cellCount; i++){
             addFurnitureCell();
         }
     }
@@ -61,8 +61,8 @@ public class FurnitureShowcase : MonoBehaviour
     }
 
     public void removeFurniturefromCell(int fid){
-        for(int i = 0; i < 8; i++){
-            if(furnitures[i] != null && furnitures[i].GetComponent<Furniture>().getFID() == fid){
+        for(int i = 0; i < cellCount; i++){
+            if(furnitures[i] != null && furnitures[i].GetComponent<Furniture>().FID == fid){
                 Destroy(furnitures[i]);
                 furnitures[i] = null;
                 furnitureCount--;
@@ -82,7 +82,7 @@ public class FurnitureShowcase : MonoBehaviour
 
     public GameObject getFurniture(int n){
         int temp = -1;
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < cellCount; i++){
             if (furnitures[i] != null ){
                 temp++;
                 if(temp == n){

@@ -231,15 +231,10 @@ public class GameHandler : MonoBehaviour
         return null;
     }
 
-    public void setFurniturPrice()
-    {
-        // need to implement 
-    }
-
     public void sellFurniturToCustomer(GameObject cust, GameObject furniture)
     {
-        int fid = furniture.GetComponent<Furniture>().getFID();
-        int price = furniture.GetComponent<Furniture>().getPrice();
+        int fid = furniture.GetComponent<Furniture>().FID;
+        int price = furniture.GetComponent<Furniture>().DisplayPrice;
         showcase.GetComponent<FurnitureShowcase>().removeFurniturefromCell(fid);
         
         if (csl > 12)

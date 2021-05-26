@@ -21,20 +21,20 @@ public class SelectHandler : MonoBehaviour
         int index = selectedParts.FindIndex(x => x == part);
         if(index == -1){
             if(Regex.IsMatch(part.name,"(StuckPart)") && selectedParts.Count == 0){
-                Debug.Log("I am ready for unstick");
+                // Debug.Log("I am ready for unstick");
                 stickButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unstick";
             }else{
                 stickButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stick";
             }
             addBorder(part);
             selectedParts.Add(part);
-            Debug.Log("Item Added");
+            // Debug.Log("Item Added");
         }
         else {
             stickButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stick";
             selectedParts.RemoveAt(index);
             removeBorder(part);
-            Debug.Log("Item Removed");
+            // Debug.Log("Item Removed");
         }
         if(selectedParts.Count == 1 && !Regex.IsMatch(part.name,"(StuckPart)")){
             miniInventoryHandler.GetComponent<MiniInventoryHandler>().changeToWoodMaterial();
@@ -44,7 +44,7 @@ public class SelectHandler : MonoBehaviour
     }
 
     public List<GameObject> getSelected(int ammount){
-        Debug.Log("Selected amount:" + selectedParts.Count);
+        // Debug.Log("Selected amount:" + selectedParts.Count);
         if(ammount == -1){
             return selectedParts;
         }else if(selectedParts.Count != ammount){
@@ -81,12 +81,14 @@ public class SelectHandler : MonoBehaviour
     public void setErrorMsg(string msg){
         errorMessage.GetComponent<TextMeshProUGUI>().text = msg;
         errorMessage.SetActive(true);
-        StartCoroutine(wait());
+        StartCoroutine(wait(msg));
     }
 
-    IEnumerator wait()
+    IEnumerator wait(string msg)
      {
-         yield return new WaitForSeconds(sec);
-         errorMessage.SetActive(false);
+        yield return new WaitForSeconds(sec);
+        if(errorMessage.GetComponent<TextMeshProUGUI>().text == msg){
+            errorMessage.SetActive(false);
+        }
      }
 }

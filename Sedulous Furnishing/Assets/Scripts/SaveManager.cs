@@ -32,7 +32,7 @@ public static class SaveManager
         {
             if (File.Exists(path))
             {
-                Debug.Log("Player Save file founded in " + path);
+                // Debug.Log("Player Save file founded in " + path);
                 BinaryFormatter formatter = new BinaryFormatter();
                 FileStream stream = new FileStream(path, FileMode.Open);
 
@@ -62,7 +62,6 @@ public static class SaveManager
         
     }
 
-
     public static void saveDate(timer t)
     {
         try
@@ -81,13 +80,12 @@ public static class SaveManager
         
     }
 
-
     public static timerData loadDate()
     {
         string path = Application.persistentDataPath + "/timeData";
         if (File.Exists(path))
         {
-            Debug.Log("Timer Date file founded in " + path);
+            // Debug.Log("Timer Date file founded in " + path);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
@@ -98,7 +96,7 @@ public static class SaveManager
         }
         else
         {
-            Debug.Log("Timer Date file not found in " + path);
+            // Debug.Log("Timer Date file not found in " + path);
             
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
@@ -127,7 +125,7 @@ public static class SaveManager
         string path = Application.persistentDataPath + "/ghData";
         if (File.Exists(path))
         {
-            Debug.Log("gamehandler file founded in " + path);
+            // Debug.Log("gamehandler file founded in " + path);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
@@ -151,6 +149,53 @@ public static class SaveManager
             return data;
         }
     }
+
+    public static void saveInventory(FurnitureData[] furnitures){
+        try
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = Application.persistentDataPath + "/InventoryData";
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            InventoryData data = new InventoryData(furnitures);
+            formatter.Serialize(stream, data);
+            stream.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    public static InventoryData loadInventory(){
+        string path = Application.persistentDataPath + "/InventoryData";
+        try
+        {
+            if (File.Exists(path))
+            {
+                // Debug.Log("Player Save file founded in " + path);
+                BinaryFormatter formatter = new BinaryFormatter();
+                FileStream stream = new FileStream(path, FileMode.Open);
+
+                InventoryData data = formatter.Deserialize(stream) as InventoryData;
+                stream.Close();
+
+                return data;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+            return null;
+        }
+    }
+
+
+
 }
 
 

@@ -9,7 +9,6 @@ public class timerData
     public sbyte dayInNum;
     public sbyte hour;
     public sbyte min;
-
     public timerData()
     {
         dayInNum = 0;

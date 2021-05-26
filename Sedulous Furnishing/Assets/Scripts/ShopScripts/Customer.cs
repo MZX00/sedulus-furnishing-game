@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 public class Customer : MonoBehaviour
 {
     //[SerializeField]
-    private float speed = 0.4f;
+    // private float speed = 0.4f;
     public GameObject UI;
     public GameObject gameHandler;
     public GameObject customRequirementCanvas;

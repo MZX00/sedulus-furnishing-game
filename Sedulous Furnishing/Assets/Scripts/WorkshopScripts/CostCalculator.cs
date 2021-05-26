@@ -17,7 +17,7 @@ public class CostCalculator : MonoBehaviour
         initPartCost();
     }
 
-    public void calculateCost(FurniutrePart part, bool remove){
+    public void calculateCost(FurniturePart part, bool remove){
         if(!remove){
             estCost += partCost[part.PartType] * materialCost[part.MaterialType];
         }else{

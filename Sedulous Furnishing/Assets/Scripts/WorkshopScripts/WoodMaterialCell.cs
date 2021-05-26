@@ -20,7 +20,7 @@ public class WoodMaterialCell : MonoBehaviour, IPointerClickHandler
             selectHandler.GetComponent<SelectHandler>().setErrorMsg("Select furniture part (only 1) to apply material");
         }else{
             GameObject selected = temp[0];
-            FurniutrePart part = selected.GetComponent<FurniutrePart>();
+            FurniturePart part = selected.GetComponent<FurniturePart>();
             if(part.MaterialType == "None"){
                 addBorder();
                 part.MaterialType = materialName;
@@ -29,12 +29,12 @@ public class WoodMaterialCell : MonoBehaviour, IPointerClickHandler
                 selected.GetComponent<Image>().sprite = img;
                 costCalculator.calculateCost(part,false);
             }else if(part.MaterialType == materialName){
+                costCalculator.calculateCost(part,true);
                 img = Resources.Load<Sprite>("Empty Furniture Parts/" + part.PartType);
                 selected.GetComponent<RectTransform>().sizeDelta = new Vector2(img.texture.width,img.texture.height);
                 selected.GetComponent<Image>().sprite = img;
                 part.MaterialType = "None";
                 removeBorder();
-                costCalculator.calculateCost(part,true);
             }else{
                 costCalculator.calculateCost(part,true);
                 for (int i = 0; i < transform.parent.childCount; i++)
