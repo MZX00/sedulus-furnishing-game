@@ -20,34 +20,39 @@ public class StickHandler : MonoBehaviour
         selectedParts = selectHandler.GetComponent<SelectHandler>().getSelected(-1);
         SelectHandler select = selectHandler.GetComponent<SelectHandler>();
         if(selectedParts.Count == 2){
-            GameObject temp = Instantiate(stuckPartPrefab,new Vector3(0,0,0),Quaternion.identity);
-            temp.transform.SetParent(transform.root,false);
-            temp.GetComponent<RectTransform>().sizeDelta = transform.root.GetComponent<RectTransform>().sizeDelta;
-            changeParentPosition(temp.GetComponent<RectTransform>());
-            foreach (GameObject item in selectedParts)
-            {
+            if(selectedParts[0].name != "StuckPart" && selectedParts[0].GetComponent<FurniturePart>().MaterialType == "None" || selectedParts[1].name != "StuckPart" && selectedParts[1].GetComponent<FurniturePart>().MaterialType == "None"){
+                select.setErrorMsg("Please apply material before sticking");
+            }else{
+                GameObject temp = Instantiate(stuckPartPrefab,new Vector3(0,0,0),Quaternion.identity);
+                temp.name = "StuckPart";
+                temp.transform.SetParent(transform.root,false);
+                temp.GetComponent<RectTransform>().sizeDelta = transform.root.GetComponent<RectTransform>().sizeDelta;
+                changeParentPosition(temp.GetComponent<RectTransform>());
+                foreach (GameObject item in selectedParts)
+                {
 
-                select.removeBorder(item);
-                //checking if sticking part is furniture
-                Button b;
-                if(item.TryGetComponent<Button>(out b)){
-                    b.onClick.RemoveAllListeners();
-                    b.onClick.AddListener(delegate {select.selectObject(temp);});
-                }else{
-                    //operations if sticking part is stuckParts
-                    Button[] buttons = item.GetComponentsInChildren<Button>();
-                    foreach (Button child  in buttons)
-                    {
-                        child.onClick.RemoveAllListeners();
-                        child.onClick.AddListener(delegate {select.selectObject(temp);});
+                    select.removeBorder(item);
+                    //checking if sticking part is furniture
+                    Button b;
+                    if(item.TryGetComponent<Button>(out b)){
+                        b.onClick.RemoveAllListeners();
+                        b.onClick.AddListener(delegate {select.selectObject(temp);});
+                    }else{
+                        //operations if sticking part is stuckParts
+                        Button[] buttons = item.GetComponentsInChildren<Button>();
+                        foreach (Button child  in buttons)
+                        {
+                            child.onClick.RemoveAllListeners();
+                            child.onClick.AddListener(delegate {select.selectObject(temp);});
+                        }
                     }
+                    item.transform.SetParent(temp.transform);
+                    item.GetComponent<DragHandler>().enabled = false;
                 }
-                item.transform.SetParent(temp.transform);
-                item.GetComponent<DragHandler>().enabled = false;
+                // selectedParts[0].GetComponent<Button>().onClick.AddListener(delegate {selectObject(temp);});
+                resizeParent(temp.GetComponent<RectTransform>());
+                selectedParts.Clear();
             }
-            // selectedParts[0].GetComponent<Button>().onClick.AddListener(delegate {selectObject(temp);});
-            resizeParent(temp.GetComponent<RectTransform>());
-            selectedParts.Clear();
         }else if(!(selectedParts.Count == 1 && Regex.IsMatch(selectedParts[0].name,"(StuckPart)"))){
             if(selectedParts.Count< 2 ){
                 select.setErrorMsg("Please select two objects to stick") ;
@@ -65,7 +70,7 @@ public class StickHandler : MonoBehaviour
             GameObject temp = selectedParts[0];
             selectedParts.Clear();
             int length = temp.transform.childCount;
-            Debug.Log("Childeren COunt: " + length);
+            //Debug.Log("Childeren COunt: " + length);
             for (int i = 0; i < length; i++)
             {
                 Transform child = temp.transform.GetChild(0);
@@ -151,9 +156,9 @@ public class StickHandler : MonoBehaviour
             }
         }
 
-        Debug.Log("Position:" + avg_x + " " + avg_y);
-        Debug.Log("X:" + max_x + " " + min_x);
-        Debug.Log("Max:" + max_y + " " + min_y);
+        //Debug.Log("Position:" + avg_x + " " + avg_y);
+        //Debug.Log("X:" + max_x + " " + min_x);
+        //Debug.Log("Max:" + max_y + " " + min_y);
         
         parent.anchoredPosition = new Vector2(avg_x ,avg_y);
     }
@@ -176,7 +181,7 @@ public class StickHandler : MonoBehaviour
             temp_min_y = child.anchoredPosition.y - (scale.y / 2);
             temp_max_y = child.anchoredPosition.y + (scale.y / 2);
 
-            Debug.Log("TEMP: " + temp_max_x + " " + temp_max_y + " " + temp_min_x + " " + temp_min_y);
+            //Debug.Log("TEMP: " + temp_max_x + " " + temp_max_y + " " + temp_min_x + " " + temp_min_y);
 
             if (temp_min_x < min_x)
                 min_x = temp_min_x;
@@ -188,7 +193,7 @@ public class StickHandler : MonoBehaviour
             if (temp_max_y > max_y)
                 max_y = temp_max_y;
         }
-        Debug.Log("MAX AND MIN: " + max_x + " " + min_x + " " + max_y + " " + min_y);
+        //Debug.Log("MAX AND MIN: " + max_x + " " + min_x + " " + max_y + " " + min_y);
         parent.sizeDelta = new Vector2(max_x - min_x, max_y - min_y);
         // parent.anchoredPosition = tempv;
     }

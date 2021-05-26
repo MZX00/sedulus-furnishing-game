@@ -23,8 +23,8 @@ public class FurniturePartCell : MonoBehaviour, IPointerClickHandler
         temp.GetComponent<Image>().sprite = img;
         temp.GetComponent<Button>().onClick.AddListener(delegate { selectHandler.GetComponent<SelectHandler>().selectObject(temp); });
         temp.name = itemName;
-        temp.GetComponent<FurniutrePart>().PartType = itemName;
-        temp.GetComponent<FurniutrePart>().MaterialType = "None";
+        temp.GetComponent<FurniturePart>().PartType = itemName;
+        temp.GetComponent<FurniturePart>().MaterialType = "None";
         // costCalculator.calculateCost(temp.GetComponent<FurniutrePart>(),false);
         if(Regex.IsMatch(itemName,"(Surface Panel)"))
             temp.transform.SetAsFirstSibling();

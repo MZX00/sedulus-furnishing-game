@@ -9,14 +9,12 @@ public class sceneManager : MonoBehaviour
 
     public GameObject player;
     [SerializeField] GameObject furniturePrefab;
-    [SerializeField] GameObject selectHandler;
+    public GameObject selectHandler;
 
     private GameObject furniture;
 
     void Start(){
         StartCoroutine("LateStart");
-        
-        
     }
 
     IEnumerator LateStart()
@@ -27,7 +25,7 @@ public class sceneManager : MonoBehaviour
         }
 
         if(SceneManager.GetActiveScene().name == "Workshop" && SceneManager.sceneCount == 1){
-            Debug.Log("AFTER OFA");
+            // Debug.Log("AFTER OFA");
             furniture = GameObject.Find("Furniture");
             while(furniture != null && furniture.transform.childCount != 0){
                 Transform temp = furniture.transform.GetChild(0);
@@ -85,6 +83,8 @@ public class sceneManager : MonoBehaviour
     public void startNewGame()
     {
         SceneManager.LoadScene("Shop");
+        // player.GetComponent<Player>().setMoney(500);
+        // Debug.Log("Amount of Money = " + player.GetComponent<Player>().getMoney());
     }
 
     // Go to main menu from Gameplay
@@ -93,7 +93,9 @@ public class sceneManager : MonoBehaviour
     }
 
     public void shopToWorkshop(){
-        furniture = GameObject.Find("Furniture");
+        // SaveManager.saveDate(timer.GetComponent<timer>());
+        // SaveManager.SavePlayer(player.GetComponent<Player>());
+        furniture = GameObject.Find("TempFurniture");
         // Debug.Log("PART NAME: " + temp.name);
         if(furniture != null){
             StartCoroutine(LoadAsyncShop(furniture,"Workshop"));
@@ -106,7 +108,7 @@ public class sceneManager : MonoBehaviour
     public void workshopToShop(){
         // Debug.Log("Item Count " + transform.root.childCount);
         furniture = Instantiate(furniturePrefab,new Vector3(0,0,0),Quaternion.identity);
-        furniture.name = "Furniture";
+        furniture.name = "TempFurniture";
         while(transform.root.childCount > 11){
             // Debug.Log("PART NAME: " + transform.root.GetChild(11).name);
             Transform temp = transform.root.GetChild(11);

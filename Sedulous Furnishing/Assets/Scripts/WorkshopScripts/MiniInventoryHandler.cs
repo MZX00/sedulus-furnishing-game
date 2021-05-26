@@ -61,9 +61,9 @@ public class MiniInventoryHandler : MonoBehaviour
         //Checking if a selected object has material applied 
         List<GameObject> tempList = selectHandler.GetComponent<SelectHandler>().getSelected(1);
         if(tempList != null){
-            name = tempList[0].GetComponent<FurniutrePart>().MaterialType;
+            name = tempList[0].GetComponent<FurniturePart>().MaterialType;
         }
-        Debug.Log("name is:" + name);
+        // Debug.Log("name is:" + name);
         for (int i = 0; i < temp.transform.childCount; i++)
         {
             GameObject child = temp.transform.GetChild(i).gameObject;
