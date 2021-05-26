@@ -18,7 +18,6 @@ public class resumeGameScript : MonoBehaviour
     {
         resumeGameButton.interactable = true;
         string path = Application.persistentDataPath + "/PlayerData";
-
         if (File.Exists(path))
         {
             resumeGameButton.interactable = true;
