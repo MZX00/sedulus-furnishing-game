@@ -24,14 +24,16 @@ public class InventoryHandler : MonoBehaviour
         FurnitureData[] fdata;
         if(inventory != null){
             fdata = inventory.furnitures;
+            Debug.Log("FDATA" + fdata.Length);
             if(fdata.Length > defaultCellCount){
                 inventoryCells = new GameObject[fdata.Length];
                 setContentSize(inventoryCells.Length);
+                furnitures = new GameObject[fdata.Length];
             }else{
                 inventoryCells = new GameObject[defaultCellCount];
                 setContentSize(defaultCellCount);
+                furnitures = new GameObject[defaultCellCount];
             }
-            furnitures = new GameObject[fdata.Length];
             
         }else{
             fdata = null;
@@ -64,7 +66,7 @@ public class InventoryHandler : MonoBehaviour
 
         for (int i = 0; i < furn.length; i++)
         {
-            Debug.Log("MaterialName: " + furn.partMaterial[i] + " Part Name " + furn.partName[i]);
+            // Debug.Log("MaterialName: " + furn.partMaterial[i] + " Part Name " + furn.partName[i]);
             Sprite img = Resources.Load<Sprite>("Furniture Parts/Wood/" + furn.partMaterial[i] + "/" + furn.partName[i]);
             GameObject part = Instantiate(furniturePartPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             part.transform.SetParent(furnitures[index].transform,false);
@@ -76,20 +78,10 @@ public class InventoryHandler : MonoBehaviour
             screenX = transform.root.GetComponent<RectTransform>().sizeDelta.x;
             screenY = transform.root.GetComponent<RectTransform>().sizeDelta.y;
 
-            // if(img.texture.width > img.texture.height){
-            //     width = img.texture.width*325/screenX;
-            //     height = img.texture.height*width/img.texture.width;
-            // }else{
-            //     height = img.texture.height*325/screenY;
-            //     width = img.texture.width*height/img.texture.height;
-            // }
-            // width = img.texture.width;
-            // height = img.texture.height;
             width = img.texture.width*325/screenX;
             height = img.texture.height*325/screenY;
             part.GetComponent<RectTransform>().sizeDelta = new Vector2(width,height);
 
-            // *325/screenX   *325/screenY
             part.GetComponent<RectTransform>().anchoredPosition = new Vector2(furn.partPosX[i]*325/screenX,furn.partPosY[i]*325/screenY);
         }
         
@@ -141,9 +133,52 @@ public class InventoryHandler : MonoBehaviour
         if(n == defaultCellCount){
             content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,800);
         }else{
-            content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,n/4 * 400);
+            if(n%4 == 0){
+                content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,n/4 * 400);
+            }else{
+                content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,(n/4 + 1) * 400);
+            }
+            
+        }
+    }
+
+
+    public void saveInventory(int furnID){
+        InventoryData inventory = SaveManager.loadInventory();
+        FurnitureData[] fdata;
+
+        if(inventory != null){
+
+            fdata = inventory.furnitures;
+            fdata[furnID] = null;
+            FurnitureData[] newInventory = new FurnitureData[fdata.Length-1];
+            int index = 0;
+
+            for (int i = 0; i < fdata.Length; i++)
+            {   
+                if(i != furnID){
+                    newInventory[index] = fdata[i];
+                    index++;
+                }
+            }
+
+            for (int i = 0; i < furnitures.Length; i++)
+            {
+                if(furnitures[i]!= null){
+                    int tempFid = furnitures[i].GetComponent<Furniture>().FID;
+                    if(tempFid > furnID){
+                        furnitures[i].GetComponent<Furniture>().FID = furnitures[i].GetComponent<Furniture>().FID -1;
+                    }
+                    
+                }
+            }
+            furnitureShowcase.GetComponent<FurnitureShowcase>().updateIndex(furnID);
+
+            SaveManager.saveInventory(newInventory);
+
         }
     }
     
 
 }
+ 

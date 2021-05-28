@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class timer : MonoBehaviour
 {
     [SerializeField]
-    private GameObject gamehandler;
+    private GameObject sceneManager;
     [SerializeField]
     private GameObject player;
     [SerializeField]
@@ -15,6 +15,7 @@ public class timer : MonoBehaviour
     private Text hourTextObj;
     [SerializeField]
     private Text dayTextObj;
+    [SerializeField] GameObject gameHandler;
 
 
     IDictionary<int, string> Days = new Dictionary<int, string>();
@@ -204,8 +205,7 @@ public class timer : MonoBehaviour
 
         // save the data of time
         SaveManager.saveDate(this);
-        SaveManager.saveGamehandler(gamehandler.GetComponent<GameHandler>());
-        gamehandler.GetComponent<GameHandler>().ShowDaysSummary();
+        sceneManager.GetComponent<sceneManager>().ShowDaysSummary();
     }
 
 }

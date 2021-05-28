@@ -8,6 +8,8 @@ public class PlayerData
     public int money;
     public int score;
 
+    public sbyte csl;
+
     public int dayNetIncome;
     public int dayExpenses;
     public int dayRevenue;
@@ -16,6 +18,7 @@ public class PlayerData
     {
         money = 100;
         score = 0;
+        csl = 7;
 
         dayNetIncome = 0;
         dayExpenses = 0;
@@ -23,10 +26,11 @@ public class PlayerData
     }
 
 
-    public PlayerData(Player player)
+    public PlayerData(Player player, CslHandler cslHandler)
     {
         money = player.getMoney();
         score = player.getScore();
+        csl = cslHandler.CSL;
 
         dayNetIncome = player.DayNetIncome;
         dayExpenses = player.DayExpenses;

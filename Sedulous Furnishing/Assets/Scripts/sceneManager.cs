@@ -8,8 +8,10 @@ public class sceneManager : MonoBehaviour
 {
 
     public GameObject player;
+    [SerializeField] GameObject timer;
     [SerializeField] GameObject furniturePrefab;
     public GameObject selectHandler;
+    [SerializeField] CslHandler csl;
 
     private GameObject furniture;
 
@@ -82,9 +84,14 @@ public class sceneManager : MonoBehaviour
     // When Player wants to start new game
     public void startNewGame()
     {
+        // Clear player data
+        SaveManager.SavePlayer();
+        // Clear date
+        SaveManager.saveDate();
+        FurnitureData[] initFurn = new FurnitureData[0];
+        SaveManager.saveInventory(initFurn);
+
         SceneManager.LoadScene("Shop");
-        // player.GetComponent<Player>().setMoney(500);
-        // Debug.Log("Amount of Money = " + player.GetComponent<Player>().getMoney());
     }
 
     // Go to main menu from Gameplay
@@ -101,6 +108,8 @@ public class sceneManager : MonoBehaviour
             StartCoroutine(LoadAsyncShop(furniture,"Workshop"));
             // loadScene(furniture,"Shop");
         }else{
+            SaveManager.saveDate(timer.GetComponent<timer>());
+            SaveManager.SavePlayer(player.GetComponent<Player>(),csl);
             SceneManager.LoadScene("Workshop");
         }
     }
@@ -118,6 +127,12 @@ public class sceneManager : MonoBehaviour
         StartCoroutine(LoadAsyncShop(furniture,"Shop"));
         // loadScene(furniture,"Shop");
         
+    }
+
+    public void ShowDaysSummary()
+    {
+        SaveManager.SavePlayer(player.GetComponent<Player>(),csl);
+        SceneManager.LoadScene("Day Summary");
     }
 
     public void goToShop(){
@@ -138,6 +153,11 @@ public class sceneManager : MonoBehaviour
     //Transfering Furniture To shop
     IEnumerator LoadAsyncShop( GameObject item, string sceneName)
     {
+        if(sceneName == "Workshop"){
+            SaveManager.saveDate(timer.GetComponent<timer>());
+            SaveManager.SavePlayer(player.GetComponent<Player>(),csl);
+        }
+        
 
         DontDestroyOnLoad(item);
 

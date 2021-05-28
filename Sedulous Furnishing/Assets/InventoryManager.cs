@@ -20,8 +20,8 @@ public class InventoryManager : MonoBehaviour
         if (data != null)
         {
             Debug.Log("Saved File exists");
-            //money = data.money;
-            money = 50000;
+            money = data.money;
+            // money = 50000;
         }
         else
         {

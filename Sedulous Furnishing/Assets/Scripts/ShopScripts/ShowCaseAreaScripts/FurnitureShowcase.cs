@@ -53,20 +53,33 @@ public class FurnitureShowcase : MonoBehaviour
             }
     }
 
+    public void addFurnitureCell(int furnid){
+        if(furnitures[furnid] != null){
+            furnitures[furnid].transform.SetParent(furnitureCells[furnid].GetComponent<RectTransform>(),false);
+        }else{
+            Debug.Log("ERROR HAS OCCURED");
+        }
+    }
+
     public GameObject removeFurniturefromCell(){
-        GameObject temp = furnitures[tempIndex];
-        furnitures[tempIndex] = null;
-        furnitureCount--;
-        return temp;
+        if(furnitureCount != 0){
+            GameObject temp = furnitures[tempIndex];
+            furnitures[tempIndex] = null;
+            furnitureCount--;
+            return temp;
+        }else{
+            return null;
+        }
+        
     }
 
     public void removeFurniturefromCell(int fid){
         for(int i = 0; i < cellCount; i++){
             if(furnitures[i] != null && furnitures[i].GetComponent<Furniture>().FID == fid){
-                Destroy(furnitures[i]);
+                // Destroy(furnitures[i]);
                 furnitures[i] = null;
                 furnitureCount--;
-                return;
+                break;
             }
         }
         
@@ -81,16 +94,31 @@ public class FurnitureShowcase : MonoBehaviour
     }
 
     public GameObject getFurniture(int n){
-        int temp = -1;
-        for(int i = 0; i < cellCount; i++){
-            if (furnitures[i] != null ){
-                temp++;
+        int temp = 0;
+        for (int i = 0; i < cellCount; i++)
+        {
+            if(furnitures[i] != null){
                 if(temp == n){
                     return furnitures[i];
+                }else{
+                    temp++;
                 }
             }
         }
         return null;
+    }
+
+    public void updateIndex(int furnID){
+        for (int i = 0; i < furnitures.Length; i++)
+            {
+                if(furnitures[i] != null){
+                    int tempFid = furnitures[i].GetComponent<Furniture>().FID;
+                    if(tempFid > furnID){
+                        furnitures[i].GetComponent<Furniture>().FID = furnitures[i].GetComponent<Furniture>().FID -1;
+                    }
+                }
+                
+            }
     }
 
    

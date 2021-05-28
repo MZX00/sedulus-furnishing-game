@@ -5,7 +5,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveManager
 {
-    public static void SavePlayer(Player player)
+
+    public static void SavePlayer()
     {
         try
         {
@@ -13,7 +14,25 @@ public static class SaveManager
             string path = Application.persistentDataPath + "/PlayerData";
             FileStream stream = new FileStream(path, FileMode.Create);
 
-            PlayerData data = new PlayerData(player);
+            PlayerData data = new PlayerData();
+            formatter.Serialize(stream, data);
+            stream.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+        
+    }
+    public static void SavePlayer(Player player,CslHandler cslHandler)
+    {
+        try
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = Application.persistentDataPath + "/PlayerData";
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            PlayerData data = new PlayerData(player,cslHandler);
             formatter.Serialize(stream, data);
             stream.Close();
         }
@@ -62,6 +81,24 @@ public static class SaveManager
         
     }
 
+    public static void saveDate()
+    {
+        try
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = Application.persistentDataPath + "/timeData";
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            timerData data = new timerData();
+            formatter.Serialize(stream, data);
+            stream.Close();
+        }
+        catch(Exception e){
+            Debug.Log(e);
+        }
+        
+    }
+
     public static void saveDate(timer t)
     {
         try
@@ -102,47 +139,6 @@ public static class SaveManager
             FileStream stream = new FileStream(path, FileMode.Create);
 
             timerData data = new timerData();
-            formatter.Serialize(stream, data);
-            stream.Close();
-
-            return data;
-        }
-    }
-
-    public static void saveGamehandler(GameHandler gh)
-    {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/ghData";
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        gamehandlerData data = new gamehandlerData(gh);
-        formatter.Serialize(stream, data);
-        stream.Close();
-    }
-
-    public static gamehandlerData loadGamehandler()
-    {
-        string path = Application.persistentDataPath + "/ghData";
-        if (File.Exists(path))
-        {
-            // Debug.Log("gamehandler file founded in " + path);
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
-
-            gamehandlerData data = formatter.Deserialize(stream) as gamehandlerData;
-            stream.Close();
-
-            return data;
-        }
-        else
-        {
-            Debug.Log("Date file not found in " + path);
-
-            BinaryFormatter formatter = new BinaryFormatter();
-//            string path = Application.persistentDataPath + "/ghData";
-            FileStream stream = new FileStream(path, FileMode.Create);
-
-            gamehandlerData data = new gamehandlerData();
             formatter.Serialize(stream, data);
             stream.Close();
 

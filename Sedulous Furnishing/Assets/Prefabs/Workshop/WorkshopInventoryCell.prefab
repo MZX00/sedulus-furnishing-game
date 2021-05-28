@@ -225,8 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 1859575631315495648, guid: 67e7cb21e5f963941b3087b05439e99a, type: 3}
-  furniture: {fileID: 0}
-  stickHandler: {fileID: 0}
+  selectHandler: {fileID: 0}
 --- !u!1 &8824417151802268901
 GameObject:
   m_ObjectHideFlags: 0

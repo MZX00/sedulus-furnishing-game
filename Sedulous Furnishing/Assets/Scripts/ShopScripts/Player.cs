@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private int money;
     private int score;
     private int level;
+    [SerializeField] CslHandler csl;
 
     private Sprite[] levels;
     private int dayNetIncome;
@@ -64,6 +65,7 @@ public class Player : MonoBehaviour
             Debug.Log("Saved File exists");
             money = data.money;
             score = data.score;
+            csl.CSL = data.csl;
         }
         else
         {
