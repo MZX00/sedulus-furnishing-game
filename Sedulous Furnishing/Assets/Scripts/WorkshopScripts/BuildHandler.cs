@@ -54,7 +54,7 @@ public class BuildHandler : MonoBehaviour
 
             SaveManager.saveInventory(newInventory);
             
-            GetComponent<sceneManager>().goToShop();
+            // GetComponent<sceneManager>().goToShop();
 
             // Debug.Log("Saved");
 

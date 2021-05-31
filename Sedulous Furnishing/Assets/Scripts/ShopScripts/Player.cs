@@ -85,6 +85,7 @@ public class Player : MonoBehaviour
         }
         
         updateMoney();
+        csl.changeCslIcon();
         Debug.Log("level = " + level);
         Debug.Log("score = " + score);
     }

@@ -17,7 +17,7 @@ public class SellHandler : MonoBehaviour
              Debug.Log("Selected Pos " + selectPos);
              selectedFurniture = showcase.GetComponent<FurnitureShowcase>().getFurniture(selectPos);
              if(selectedFurniture == null){
-                 Debug.Log("Seleected is null" );
+                 Debug.Log("Selected is null" );
              }
              return selectedFurniture;
         }else{
@@ -58,6 +58,7 @@ public class SellHandler : MonoBehaviour
         inventory.GetComponent<InventoryHandler>().saveInventory(selectedFurniture.GetComponent<Furniture>().FID);
         Destroy(selectedFurniture);
         selectedFurniture = null;
+        csl.increaseCsl();
         SaveManager.SavePlayer(player.GetComponent<Player>(),csl);
         
     }

@@ -11,6 +11,7 @@ public class CustomerHandler : MonoBehaviour
     [SerializeField] GameObject customerRequirementCanvas2;
     [SerializeField] GameObject speechBubble;
     int customerCounter;
+
     void Start(){
         customers = new List<GameObject>();
         StartCoroutine(spawnCustomer());
@@ -47,33 +48,43 @@ public class CustomerHandler : MonoBehaviour
 
     public void openRequirementCanvas(){
         customers[0].GetComponent<Customer>().Journey = 2;
-        sbyte type = (sbyte) Random.Range(0, 2);
-        if(GetComponent<SellHandler>().checkSelected()){
 
-            GameObject temp = GetComponent<SellHandler>().selectFurniture();
+        sbyte type = 1;
+        //sbyte type = (sbyte) Random.Range(0, 2);
+        if (type == 0)
+        {
+            if (GetComponent<SellHandler>().checkSelected())
+            {
 
-            if(temp != null){
-                speechBubble.GetComponentInChildren<TextMeshProUGUI>().text = "···";
-                speechBubble.GetComponentInChildren<TextMeshProUGUI>().fontSize = 100;
+                GameObject temp = GetComponent<SellHandler>().selectFurniture();
 
-                temp.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f,0.5f);
-                temp.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f,0.5f);
+                if (temp != null)
+                {
+                    speechBubble.GetComponentInChildren<TextMeshProUGUI>().text = "···";
+                    speechBubble.GetComponentInChildren<TextMeshProUGUI>().fontSize = 100;
 
-                temp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,0);
+                    temp.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
+                    temp.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
 
-                temp.transform.SetParent(customerRequirementCanvas1.transform.GetChild(2).GetComponent<RectTransform>(),false);
-                
-                customerRequirementCanvas1.SetActive(true);
-            }else{
-                speechBubble.GetComponentInChildren<TextMeshProUGUI>().text = "No Furniture!";
-                speechBubble.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
+                    temp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+                    temp.transform.SetParent(customerRequirementCanvas1.transform.GetChild(2).GetComponent<RectTransform>(), false);
+
+                    customerRequirementCanvas1.SetActive(true);
+                }
+                else
+                {
+                    speechBubble.GetComponentInChildren<TextMeshProUGUI>().text = "No Furniture!";
+                    speechBubble.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
+                }
             }
+            customerRequirementCanvas1.SetActive(true);
         }
-        // if(type == 0){
-        //     customerRequirementCanvas1.SetActive(true);
-        // }else{
-        //     customerRequirementCanvas2.SetActive(true);
-        // }
+        else
+        {
+            speechBubble.SetActive(false);
+            customerRequirementCanvas2.SetActive(true);
+        }
     }
 
     public void removeCustomer(GameObject cust){

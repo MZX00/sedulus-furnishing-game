@@ -1558,6 +1558,7 @@ GameObject:
   - component: {fileID: 559166248}
   - component: {fileID: 559166247}
   - component: {fileID: 559166246}
+  - component: {fileID: 559166249}
   m_Layer: 5
   m_Name: Decline Button
   m_TagString: Untagged
@@ -1628,7 +1629,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 559166247}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1667557859}
+        m_TargetAssemblyTypeName: CustomerHandler, Assembly-CSharp
+        m_MethodName: setJourney
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 559166249}
+        m_TargetAssemblyTypeName: SecondCustScript, Assembly-CSharp
+        m_MethodName: declined
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1956239594}
+        m_TargetAssemblyTypeName: CslHandler, Assembly-CSharp
+        m_MethodName: decreaseCsl
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &559166247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1667,6 +1704,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 559166244}
   m_CullTransparentMesh: 1
+--- !u!114 &559166249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559166244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68a45a03d6ccd2f4486a67fecf685b18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Canvas: {fileID: 878460889}
 --- !u!1 &641545303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,7 +1839,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 1.2200055}
+  m_AnchoredPosition: {x: 0, y: 1.2200094}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &706410212
@@ -2032,7 +2082,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 848806405}
   m_HandleRect: {fileID: 849195573}
   m_Direction: 2
-  m_Value: 0
+  m_Value: -0.000025014384
   m_Size: 0.99593335
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2163,6 +2213,7 @@ GameObject:
   - component: {fileID: 878460892}
   - component: {fileID: 878460891}
   - component: {fileID: 878460890}
+  - component: {fileID: 878460894}
   m_Layer: 5
   m_Name: Requirement Popup Canvas 1
   m_TagString: Untagged
@@ -2256,6 +2307,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &878460894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878460889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 335a2a023ade22b4088db826758cd6c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partPrefab: {fileID: 0}
 --- !u!1 &916792274
 GameObject:
   m_ObjectHideFlags: 0
@@ -3739,6 +3803,7 @@ GameObject:
   - component: {fileID: 1725845530}
   - component: {fileID: 1725845529}
   - component: {fileID: 1725845531}
+  - component: {fileID: 1725845532}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3805,7 +3870,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1725845528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.55, y: 2.3, z: 0}
+  m_LocalPosition: {x: -7.46, y: 2.44, z: 0}
   m_LocalScale: {x: 0.32026348, y: 0.26744738, z: 0.269}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3836,6 +3901,25 @@ MonoBehaviour:
   level8: {fileID: 21300000, guid: 2f4129f9937a4e44aa71f2177f1942d3, type: 3}
   level9: {fileID: 21300000, guid: cf7659b8f99e3a746806876495c51a23, type: 3}
   level10: {fileID: 21300000, guid: 6edb11c66596e8a418414c8f3a9e062e, type: 3}
+--- !u!95 &1725845532
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725845528}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 28b2791b886343544b8a879e6e79c1ee, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1865144320
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class Customer : MonoBehaviour
     public GameObject speechBubble;
     public CslHandler csl;
     public SellHandler sellHandler;
+    public Animator animator;
     public sbyte Journey{
         set{
             journey = value;
@@ -28,6 +29,7 @@ public class Customer : MonoBehaviour
     void Awake(){
         journey = 1;
         setPatience();
+        animator.SetInteger("Journey", -1);
     }
 
     void FixedUpdate(){
@@ -42,18 +44,25 @@ public class Customer : MonoBehaviour
     public void moveToCounter(){
         if (!colliding)
         {
+            animator.SetInteger("Journey", -1);
             transform.Translate(0, 2 * Time.deltaTime, 0);
+        }
+        else
+        {
+            animator.SetInteger("Journey", 0);
         }
         if (transform.position.y > -0.53f)
         {
             journey = 0;
+            GameObject.Find("Player").GetComponent<Animator>().SetTrigger("New Trigger");
         }
     }
 
     public void waitingAtCounter(){
+        animator.SetInteger("Journey", 1);
         speechBubble.SetActive(true);
 
-        if (transform.position.y < -0.53f)
+        if (transform.position.y < -0.30f)
         {
             transform.Translate(0, 1 * Time.deltaTime, 0);
         }
@@ -70,7 +79,7 @@ public class Customer : MonoBehaviour
     }
 
     public void moveToBack(){
-        if(updateCount == 0){
+        if (updateCount == 0){
             Debug.Log(" I RAN ");
             sellHandler.gameObject.GetComponent<CustomerHandler>().removeCustomer(this.gameObject);
             speechBubble.SetActive(false);
@@ -79,10 +88,13 @@ public class Customer : MonoBehaviour
         
 
         if (transform.position.x > -8.26f){
+            animator.SetInteger("Journey", 2);
             transform.Translate(-1 * Time.deltaTime, 0, 0);
         }else {
+            animator.SetInteger("Journey", 3);
             transform.Translate(0, -1 * Time.deltaTime, 0);
             if (transform.position.y < -7.0f){
+                animator.SetInteger("Journey", 4);
                 Destroy(gameObject);
             }
         }
@@ -107,19 +119,19 @@ public class Customer : MonoBehaviour
 
     public void setPatience(){
         patience = 13;
-        // CSL affecting patience
+        //CSL affecting patience
         // if (csl.CSL > 12)
-        // {
-        //     patience = 25;
-        // }
-        // else if (csl.CSL <= 12 && csl.CSL > 4)
-        // {
-        //     patience = 20;
-        // }
-        // else if (csl.CSL <= 4)
-        // {
-        //     patience = 15;
-        // }
+        //{
+        //    patience = 25;
+        //}
+        //else if (csl.CSL <= 12 && csl.CSL > 4)
+        //{
+        //    patience = 20;
+        //}
+        //else if (csl.CSL <= 4)
+        //{
+        //    patience = 15;
+        //}
     }
 
 
@@ -135,19 +147,3 @@ public class Customer : MonoBehaviour
     }
 
 }
-
-
-/* 
- * Tasks
- * (1) Customer Request type 
- * (2) add sound, when customer reaches to counter a bell sound will ring 
- * (3) Add Animation 
- * 
- * Center heading "parts list"
- * 1) name of the part  eg .Arm
- * 2) matrial 
- * 3) quantity
- * 
- * 
- * 
- */
